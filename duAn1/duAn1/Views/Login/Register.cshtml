@@ -1,0 +1,139 @@
+﻿@model duAn1.Models.User
+
+<div class="min-h-screen flex items-center justify-center relative overflow-hidden py-10 px-4">
+    <!-- Background Elements -->
+    <div class="absolute inset-0 z-0 pointer-events-none">
+        <img 
+            src="https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?auto=format&fit=crop&q=80&w=2000" 
+            alt="Background" 
+            class="object-cover opacity-20 w-full h-full"
+        />
+        <div class="absolute inset-0 bg-gradient-to-br from-blue-50/90 to-blue-100/80 backdrop-blur-sm"></div>
+    </div>
+
+    <!-- Register Card -->
+    <div class="relative z-10 w-full max-w-4xl grid grid-cols-1 md:grid-cols-2 bg-white/40 backdrop-blur-xl rounded-3xl shadow-2xl overflow-hidden border border-white/60 animate-fade-in">
+        
+        <!-- Left Side: Image/Branding -->
+        <div class="hidden md:flex flex-col justify-center items-center p-12 bg-blue-600/10 text-center relative overflow-hidden group">
+            <div class="absolute inset-0 transition-transform duration-1000 group-hover:scale-105">
+                <img 
+                    src="https://images.unsplash.com/photo-1617038220319-276d3cfab638?auto=format&fit=crop&q=80&w=800"
+                    class="object-cover opacity-90 mix-blend-overlay w-full h-full"
+                    alt="Jewelry Art"
+                />
+                <div class="absolute inset-0 bg-blue-900/50 mix-blend-multiply"></div>
+            </div>
+            
+            <div class="relative z-10 text-white">
+                <div class="w-20 h-20 bg-white/20 backdrop-blur-md rounded-full flex items-center justify-center mx-auto mb-6 shadow-[0_0_20px_rgba(255,255,255,0.3)] border border-white/30">
+                    <span class="text-4xl font-serif">J</span>
+                </div>
+                <h2 class="text-3xl font-serif font-bold mb-4 tracking-wide">Gia Nhập JewelAI</h2>
+                <p class="text-blue-50 font-light text-base leading-relaxed">Trở thành thành viên để nhận ưu đãi đặc biệt và trải nghiệm mua sắm đẳng cấp.</p>
+            </div>
+        </div>
+
+        <!-- Right Side: Form -->
+        <div class="p-8 md:p-12 flex flex-col justify-center bg-white/30">
+            <div class="mb-6 text-center md:text-left">
+                <h1 class="text-3xl font-serif font-bold text-slate-800 mb-2">Đăng Ký</h1>
+                <p class="text-slate-500">Tạo tài khoản mới miễn phí</p>
+            </div>
+
+            <form asp-controller="Home" asp-action="Register" method="post" class="space-y-4">
+                <div class="space-y-1">
+                    <label class="text-sm font-bold text-slate-700 ml-1">Họ và Tên</label>
+                    <div class="relative group">
+                        <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-slate-400 group-focus-within:text-blue-500 transition-colors">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+                              <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
+                            </svg>
+                        </div>
+                        <input 
+                            id="name"
+                            type="text" 
+                            name="FullName" 
+                            class="w-full pl-11 pr-4 py-3 bg-white/60 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-400 focus:border-transparent outline-none transition-all placeholder:text-slate-400 shadow-sm"
+                            placeholder="Nguyễn Văn A"
+                        >
+                        <div id="nameError" style="color:red; font-size:13px; margin-top:4px; display:none;"></div>
+                    </div>
+                </div>
+
+                <div class="space-y-1">
+                    <label class="text-sm font-bold text-slate-700 ml-1">Email</label>
+                    <div class="relative group">
+                        <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-slate-400 group-focus-within:text-blue-500 transition-colors">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+                              <path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75" />
+                            </svg>
+                        </div>
+                        <input 
+                            id="email"
+                            type="email" 
+                            name="Email" 
+                            class="w-full pl-11 pr-4 py-3 bg-white/60 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-400 focus:border-transparent outline-none transition-all placeholder:text-slate-400 shadow-sm"
+                            placeholder="name@example.com"
+                        >
+                        <div id="emailError" style="color:red; font-size:13px; margin-top:4px; display:none;"></div>
+							<span asp-validation-for="Email" class="text-red-600 text-sm"></span>
+                    </div>
+                </div>
+
+                <div class="space-y-1">
+                    <label class="text-sm font-bold text-slate-700 ml-1">Mật khẩu</label>
+                    <div class="relative group">
+                        <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-slate-400 group-focus-within:text-blue-500 transition-colors">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+                              <path stroke-linecap="round" stroke-linejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z" />
+                            </svg>
+                        </div>
+                        <input 
+                            id="password"
+                            type="password" 
+                            name="Password" 
+                            class="w-full pl-11 pr-4 py-3 bg-white/60 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-400 focus:border-transparent outline-none transition-all placeholder:text-slate-400 shadow-sm"
+                            placeholder="••••••••"
+                        >
+                        <div id="passwordError" style="color:red; font-size:13px; margin-top:4px; display:none;"></div>
+                    </div>
+                </div>
+                
+                <div class="space-y-1">
+                    <label class="text-sm font-bold text-slate-700 ml-1">Xác nhận mật khẩu</label>
+                    <div class="relative group">
+                        <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-slate-400 group-focus-within:text-blue-500 transition-colors">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+                              <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12c0 1.268-.63 2.39-1.593 3.068a3.745 3.745 0 01-1.043 3.296 3.745 3.745 0 01-3.296 1.043A3.745 3.745 0 0112 21c-1.268 0-2.39-.63-3.068-1.593a3.746 3.746 0 01-3.296-1.043 3.745 3.745 0 01-1.043-3.296A3.745 3.745 0 013 12c0-1.268.63-2.39 1.593-3.068a3.745 3.745 0 011.043-3.296 3.746 3.746 0 013.296-1.043A3.746 3.746 0 0112 3c1.268 0 2.39.63 3.068 1.593a3.746 3.746 0 013.296 1.043 3.746 3.746 0 011.043 3.296A3.745 3.745 0 0121 12z" />
+                            </svg>
+                        </div>
+                        <input 
+                            id="confirmPassword"
+                            type="password" 
+                            name="confirmPassword" 
+                            class="w-full pl-11 pr-4 py-3 bg-white/60 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-400 focus-border-transparent outline-none transition-all placeholder:text-slate-400 shadow-sm"
+                            placeholder="••••••••"
+                        >
+                        <div id="confirmPasswordError" style="color:red; font-size:13px; margin-top:4px; display:none;"></div>
+                    </div>
+                </div>
+                                <button 
+                                    type="submit" 
+                                    class="w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-bold py-4 rounded-xl shadow-lg shadow-blue-500/30 transition-all transform active:scale-[0.98] mt-2 flex justify-center items-center gap-2 group"
+                                    onclick="if(!validateRegister()){event.preventDefault();}"
+                                >
+                                    <span>Đăng Ký Ngay</span>
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5 group-hover:translate-x-1 transition-transform">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+                                    </svg>
+                                </button>
+            </form>
+            <!-- Xoá div lỗi tổng -->
+            <div class="mt-6 text-center text-sm text-slate-500">
+                Đã có tài khoản? <a href="/home/login" class="text-blue-600 font-bold hover:underline hover:text-blue-800 transition-colors">Đăng nhập</a>
+            </div>
+        </div>
+    </div>
+<script src="~/js/register-validate.js"></script>
+</div>

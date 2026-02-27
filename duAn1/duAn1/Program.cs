@@ -1,15 +1,38 @@
+﻿using duAn1.Models;
+using duAn1.Services;
+using Microsoft.EntityFrameworkCore;
+using System;
+
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+// ==========================
+// Add services
+// ==========================
 builder.Services.AddControllersWithViews();
+
+// Kết nối SQL Server
+builder.Services.AddDbContext<AppDbContext>(options =>
+    options.UseSqlServer(
+        builder.Configuration.GetConnectionString("DefaultConnection")
+    )
+);
+
+
+// Đăng ký UserRepository và UserService cho DI
+builder.Services.AddScoped<duAn1.Repository.UserRepository>();
+builder.Services.AddScoped<UserService>();
+builder.Services.AddScoped<CryUtils>();
+// Khi hệ thống cần IAuthService → hãy tạo ra AuthService để dùng.
+builder.Services.AddScoped<IAuthService, AuthService>();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+// ==========================
+// Configure Middleware
+// ==========================
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
 
@@ -20,6 +43,7 @@ app.UseRouting();
 
 app.UseAuthorization();
 
+// Route mặc định
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
