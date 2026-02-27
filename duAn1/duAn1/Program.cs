@@ -1,4 +1,5 @@
 ﻿using duAn1.Models;
+using duAn1.Repository;
 using duAn1.Services;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -22,6 +23,8 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 builder.Services.AddScoped<duAn1.Repository.UserRepository>();
 builder.Services.AddScoped<UserService>();
 builder.Services.AddScoped<CryUtils>();
+builder.Services.AddScoped<ProductService>();
+builder.Services.AddScoped<ProductRepository>();
 // Khi hệ thống cần IAuthService → hãy tạo ra AuthService để dùng.
 builder.Services.AddScoped<IAuthService, AuthService>();
 
