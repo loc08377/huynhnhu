@@ -53,7 +53,7 @@ namespace duAn1.Controllers
             }
 
             // Nếu đúng -> đăng nhập thành công
-            HttpContext.Session.SetString("UserEmail", user.Email);
+           // HttpContext.Session.SetString("UserEmail", user.Email);
 
             return View("~/Views/Home/Index.cshtml");
         }

@@ -1,8 +1,104 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
-}
+﻿@model List<Product>
 
-<div class="text-center">
-    <h1 class="display-4">Nhu NHUNHUNHUHHH</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<!-- Hero Section -->
+<div class="relative w-full h-[500px] flex items-center justify-center overflow-hidden rounded-b-[3rem] shadow-lg mb-12">
+    <div class="absolute inset-0 z-0">
+        <img src="https://images.unsplash.com/photo-1573408301185-a1d31e857b9d?auto=format&fit=crop&q=80&w=2000"
+             alt="Luxury Jewelry Background"
+             class="w-full h-full object-cover opacity-90" />
+        <div class="absolute inset-0 bg-blue-900/30 mix-blend-multiply"></div>
+    </div>
+
+    <div class="relative z-10 text-center text-white px-4 glass-panel p-10 rounded-2xl max-w-2xl mx-4">
+        <h1 class="text-4xl md:text-6xl font-bold mb-4 font-serif text-blue-900 drop-shadow-sm">Vẻ Đẹp Vĩnh Cửu</h1>
+        <p class="text-lg md:text-xl mb-8 text-slate-700 font-light">Khám phá bộ sưu tập trang sức tinh tế, đánh thức vẻ đẹp kiêu sa của bạn.</p>
+        <a href="/products" class="inline-block bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-8 rounded-full transition-all duration-300 transform hover:scale-105 shadow-lg border border-blue-400">
+            Mua Sắm Ngay
+        </a>
+    </div>
+</div>
+
+<!-- Featured Section -->
+<div class="container-fluid px-4 pb-16 overflow-hidden">
+    <h2 class="text-3xl font-bold text-center text-slate-800 mb-10 font-serif relative">
+        <span class="relative z-10 px-4">Sản Phẩm Mới</span>
+        <div class="absolute w-24 h-1 bg-blue-300 bottom-0 left-1/2 -translate-x-1/2 -mb-2"></div>
+    </h2>
+
+    <!-- Horizontal Scroll Container -->
+    <div class="flex overflow-x-auto pb-8 -mx-4 px-4 gap-4 snap-x snap-mandatory scroll-smooth hide-scrollbar items-stretch">
+
+        <!-- Card 1 -->
+        @foreach (var item in Model)
+        {
+            <div class="flex-none w-[220px] md:w-[260px] glass-card rounded-xl overflow-hidden group relative flex flex-col snap-center cursor-pointer border border-white/50">
+
+                <div class="relative h-48 md:h-56 overflow-hidden bg-white">
+                    <img src="@item.Image"
+                         class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                         alt="@item.Name" />
+
+                    <span class="absolute top-2 left-2 bg-blue-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full shadow-md">
+                        NEW
+                    </span>
+                </div>
+
+                <div class="p-3 flex-grow flex flex-col">
+                    <div class="text-[10px] text-blue-500 font-semibold uppercase tracking-wider mb-1">
+                    </div>
+
+                    <h3 class="text-sm font-bold text-slate-800 mb-1 font-serif line-clamp-2 min-h-[2.5em]">
+                        @item.Name
+                    </h3>
+
+                    <div class="mt-auto flex items-center justify-between pt-2">
+                        <span class="text-base font-bold text-blue-600">
+                            @item.Price.ToString("N0") ₫
+                        </span>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+
+    <div class="mt-8 text-center">
+        <a href="/products" class="text-blue-600 hover:text-blue-800 font-semibold border-b-2 border-blue-200 hover:border-blue-600 transition-colors pb-1">Xem Tất Cả Sản Phẩm &rarr;</a>
+    </div>
+</div>
+
+<!-- Why Choose Us -->
+<div class="bg-blue-50/50 py-16">
+    <div class="container mx-auto px-4">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div class="text-center p-6">
+                <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4 text-blue-600">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-8 h-8">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12c0 1.268-.63 2.39-1.593 3.068a3.745 3.745 0 01-1.043 3.296 3.745 3.745 0 01-3.296 1.043A3.745 3.745 0 0112 21c-1.268 0-2.39-.63-3.068-1.593a3.746 3.746 0 01-3.296-1.043 3.745 3.745 0 01-1.043-3.296A3.745 3.745 0 013 12c0-1.268.63-2.39 1.593-3.068a3.745 3.745 0 011.043-3.296 3.746 3.746 0 013.296-1.043A3.746 3.746 0 0112 3c1.268 0 2.39.63 3.068 1.593a3.746 3.746 0 013.296 1.043 3.746 3.746 0 011.043 3.296A3.745 3.745 0 0121 12z" />
+                    </svg>
+                </div>
+                <h3 class="text-xl font-bold text-slate-800 mb-2">Chất Lượng Đảm Bảo</h3>
+                <p class="text-slate-600">Cam kết vàng thật, đá quý tự nhiên có giấy kiểm định uy tín.</p>
+            </div>
+
+            <div class="text-center p-6">
+                <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4 text-blue-600">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-8 h-8">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 18.75a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h6m-9 0H3.375a1.125 1.125 0 01-1.125-1.125V14.25m17.25 4.5a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h1.125c.621 0 1.129-.504 1.09-1.124a17.902 17.902 0 00-3.213-9.193 2.056 2.056 0 00-1.58-.86H14.25M16.5 18.75h-2.25m0-11.177v-.958c0-.568-.422-1.048-.987-1.106a48.554 48.554 0 00-10.026 0 1.106 1.106 0 00-.987 1.106v7.635m12-6.677v6.677m0 4.5v-4.5m0 0h-12" />
+                    </svg>
+                </div>
+                <h3 class="text-xl font-bold text-slate-800 mb-2">Giao Hàng Miễn Phí</h3>
+                <p class="text-slate-600">Miễn phí vận chuyển toàn quốc cho đơn hàng từ 2 triệu đồng.</p>
+            </div>
+
+            <div class="text-center p-6">
+                <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4 text-blue-600">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-8 h-8">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 00-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 002.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 002.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 00-2.456 2.456zM16.894 20.567L16.5 21.75l-.394-1.183a2.25 2.25 0 00-1.423-1.423L13.5 18.75l1.183-.394a2.25 2.25 0 001.423-1.423l.394-1.183.394 1.183a2.25 2.25 0 001.423 1.423l1.183.394-1.183.394a2.25 2.25 0 00-1.423 1.423z" />
+                    </svg>
+                </div>
+                <h3 class="text-xl font-bold text-slate-800 mb-2">Tư Vấn Phong Cách AI</h3>
+                <p class="text-slate-600">Công nghệ AI tiên tiến giúp bạn chọn món trang sức phù hợp nhất.</p>
+            </div>
+        </div>
+    </div>
 </div>

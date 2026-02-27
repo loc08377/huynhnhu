@@ -10,6 +10,7 @@ namespace duAn1.Controllers
     {
         private readonly ILogger<HomeController> _logger;
         private readonly UserService _userService;
+        private readonly ProductService _productService;
         private readonly IAuthService _authService;
         private readonly AppDbContext _context;
 
@@ -17,18 +18,20 @@ namespace duAn1.Controllers
             ILogger<HomeController> logger,
             UserService userService,
             IAuthService authService,
+            ProductService productService,
             AppDbContext context
         )
         {
             _logger = logger;
             _userService = userService;
             _authService = authService;
+            _productService = productService;
             _context = context;   
         }
 
         public IActionResult Index()
         {
-            return View();
+            return View(_productService.GetProducts());
         }
 
         public IActionResult Login()
@@ -53,7 +56,7 @@ namespace duAn1.Controllers
             user.Password = _authService.HashPassword(user, user.Password);
 
             _context.Users.Add(user);
-            _context.SaveChanges();
+                    _context.SaveChanges();
 
             return View("~/Views/Login/Index.cshtml");
         }
