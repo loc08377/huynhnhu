@@ -11,6 +11,7 @@ namespace duAn1.Controllers
         private readonly ILogger<HomeController> _logger;
         private readonly UserService _userService;
         private readonly ProductService _productService;
+        private readonly CategoryService _categoryService;
         private readonly IAuthService _authService;
         private readonly AppDbContext _context;
 
@@ -19,6 +20,7 @@ namespace duAn1.Controllers
             UserService userService,
             IAuthService authService,
             ProductService productService,
+            CategoryService categoryService,
             AppDbContext context
         )
         {
@@ -26,6 +28,7 @@ namespace duAn1.Controllers
             _userService = userService;
             _authService = authService;
             _productService = productService;
+            _categoryService = categoryService;
             _context = context;   
         }
 
@@ -69,10 +72,15 @@ namespace duAn1.Controllers
                 RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier
             });
         }
-
+        [HttpGet]
         public IActionResult Collection()
         {
-            return View("~/Views/CollectionProduct/CollectionIndex.cshtml");
+            return View("~/Views/CollectionProduct/CollectionIndex.cshtml", (_productService.GetProducts(), _categoryService.GetCategories()));
+        }
+        [HttpPost]
+        public IActionResult Collection(int idCategory)
+        {
+            return View("~/Views/CollectionProduct/CollectionIndex.cshtml", _productService.getProductByCategory(idCategory));
         }
     }
 }

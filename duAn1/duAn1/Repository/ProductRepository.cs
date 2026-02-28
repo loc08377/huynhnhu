@@ -21,5 +21,14 @@ namespace duAn1.Repository
             return productList; 
 
         }
+        public List<Product> getProductByCategory(int idCategory)
+        {
+            List<Product> listProductByCategory = new List<Product>();
+            listProductByCategory = _context.Products
+                .Include(p => p.Category)
+                .Where(p => p.CategoryId == idCategory)
+                .ToList();
+            return listProductByCategory;
+        }
     }
 }

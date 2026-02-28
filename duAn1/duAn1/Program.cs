@@ -25,6 +25,9 @@ builder.Services.AddScoped<UserService>();
 builder.Services.AddScoped<CryUtils>();
 builder.Services.AddScoped<ProductService>();
 builder.Services.AddScoped<ProductRepository>();
+
+builder.Services.AddScoped<CategoryService>();
+builder.Services.AddScoped<CategoryLINQ>();
 // Khi hệ thống cần IAuthService → hãy tạo ra AuthService để dùng.
 builder.Services.AddScoped<IAuthService, AuthService>();
 

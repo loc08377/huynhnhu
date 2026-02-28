@@ -23,5 +23,18 @@ namespace duAn1.Services
             }
             
         }
+        public List<Product> getProductByCategory(int idCategory)
+        {
+            try
+            {
+                List<Product> listProductByCategory = new List<Product>();
+                listProductByCategory = _productRepository.getProductByCategory(idCategory);
+                return listProductByCategory;
+            }
+            catch (Exception ex)
+            {
+                return new List<Product>();
+            }
+        }
     }
 }
