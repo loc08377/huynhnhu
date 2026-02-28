@@ -69,5 +69,10 @@ namespace duAn1.Controllers
                 RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier
             });
         }
+
+        public IActionResult Collection()
+        {
+            return View("~/Views/CollectionProduct/CollectionIndex.cshtml");
+        }
     }
 }

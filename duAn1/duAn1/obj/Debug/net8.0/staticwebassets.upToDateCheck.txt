@@ -1,4 +1,5 @@
 wwwroot\css\header_css.css
+wwwroot\css\Home.css
 wwwroot\css\site.css
 wwwroot\favicon.ico
 wwwroot\js\register-validate.js

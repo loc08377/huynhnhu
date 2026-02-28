@@ -28,7 +28,6 @@
     <!-- Horizontal Scroll Container -->
     <div class="flex overflow-x-auto pb-8 -mx-4 px-4 gap-4 snap-x snap-mandatory scroll-smooth hide-scrollbar items-stretch">
 
-        <!-- Card 1 -->
         @foreach (var item in Model)
         {
             <div class="flex-none w-[220px] md:w-[260px] glass-card rounded-xl overflow-hidden group relative flex flex-col snap-center cursor-pointer border border-white/50">
@@ -41,10 +40,18 @@
                     <span class="absolute top-2 left-2 bg-blue-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full shadow-md">
                         NEW
                     </span>
+
+                    <!-- Wishlist (Heart) Icon -->
+                    <button class="absolute top-2 right-2 p-1.5 rounded-full bg-white/80 hover:bg-white text-pink-500 transition-colors shadow-sm z-10 backdrop-blur-sm">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z" />
+                        </svg>
+                    </button>
                 </div>
 
                 <div class="p-3 flex-grow flex flex-col">
                     <div class="text-[10px] text-blue-500 font-semibold uppercase tracking-wider mb-1">
+                    @item.Category.Name
                     </div>
 
                     <h3 class="text-sm font-bold text-slate-800 mb-1 font-serif line-clamp-2 min-h-[2.5em]">
@@ -53,8 +60,16 @@
 
                     <div class="mt-auto flex items-center justify-between pt-2">
                         <span class="text-base font-bold text-blue-600">
-                            @item.Price.ToString("N0") ₫
+                            @(item.Price?.ToString("N0") ?? "0") ₫
                         </span>
+
+                            <!-- Add to Cart Icon -->
+                            <button class="bg-slate-800 hover:bg-blue-600 text-white w-8 h-8 rounded-lg transition-all shadow-md flex items-center justify-center active:scale-95" title="Thêm vào giỏ">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 00-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 00-16.536-1.84M7.5 14.25L5.106 5.272M6 20.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zm12.75 0a.75.75 0 11-1.5 0 .75.75 0 011.5 0z" />
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3m0 0v3m0-3h3m-3 0H9" />
+                                </svg>
+                            </button>
                     </div>
                 </div>
             </div>
@@ -62,7 +77,7 @@
     </div>
 
     <div class="mt-8 text-center">
-        <a href="/products" class="text-blue-600 hover:text-blue-800 font-semibold border-b-2 border-blue-200 hover:border-blue-600 transition-colors pb-1">Xem Tất Cả Sản Phẩm &rarr;</a>
+        <a asp-controller="Home" asp-action="Collection" class="text-blue-600 hover:text-blue-800 font-semibold border-b-2 border-blue-200 hover:border-blue-600 transition-colors pb-1">Xem Tất Cả Sản Phẩm &rarr;</a>
     </div>
 </div>
 

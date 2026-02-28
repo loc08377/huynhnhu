@@ -1,7 +1,9 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace duAn1.Models
 {
+    [Table("categories")]
     public class Category
     {
         public int Id { get; set; }
@@ -15,6 +17,6 @@ namespace duAn1.Models
         public string Name { get; set; }
 
         // Navigation Property (1 Category có nhiều Product)
-        public virtual ICollection<Product> Products { get; set; }
+        public ICollection<Product> Products { get; set; }
     }
 }

@@ -16,8 +16,7 @@ namespace duAn1.Repository
         {
             List<Product> productList = new List<Product>();
             productList = _context.Products
-                .FromSqlRaw("SELECT * FROM products")
-                .AsEnumerable()
+                .Include(p => p.Category)
                 .ToList();
             return productList; 
 
