@@ -1,0 +1,148 @@
+﻿@model List<Cart>
+
+<div class="w-full px-4 md:px-8 py-8 min-h-screen">
+    <h1 class="text-3xl font-bold text-slate-800 mb-8 font-serif text-center">Giỏ Hàng Của Bạn</h1>
+
+    <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6">
+        <div class="flex items-center gap-3">
+            <input type="checkbox" id="cart-check-all" class="form-checkbox w-5 h-5 accent-blue-600">
+            <label for="cart-check-all" class="font-semibold text-slate-700 select-none cursor-pointer">Chọn tất cả</label>
+        </div>
+        <div class="flex items-center gap-2">
+            <input id="cart-search-input" type="text" placeholder="Tìm theo ngày hoặc tên sản phẩm..." class="border border-slate-300 rounded-lg px-3 py-2 w-64 focus:outline-none focus:ring-2 focus:ring-blue-300" />
+        </div>
+    </div>
+
+    <div class="grid grid-cols-1 xl:grid-cols-4 gap-8">
+        <!-- Cart Items List -->
+        <div class="xl:col-span-3 space-y-4 max-h-[520px] overflow-y-auto pr-2">
+            @foreach (var group in Model
+                .Where(c => c.CreateDate.HasValue)
+                .GroupBy(c => c.CreateDate.Value.Date)
+                .OrderByDescending(g => g.Key))
+            {
+                var dayKey = group.Key.ToString("yyyy-MM-dd");
+                <div class="mb-6 cart-group">
+                    <div class="flex items-center gap-2 mb-2 pl-1">
+                        <input type="checkbox" class="cart-day-checkbox form-checkbox w-5 h-5 accent-blue-600" data-day="@dayKey" id="day-@dayKey" />
+                        <label for="day-@dayKey" class="font-bold text-blue-700 text-base select-none cursor-pointer">Ngày @group.Key.ToString("dd/MM/yyyy")</label>
+                    </div>
+                    <div class="space-y-3">
+                        @foreach (var cart in group)
+                        {
+                            <div class="glass-card border border-slate-200 shadow-lg p-3 rounded-xl flex items-center gap-4 min-h-[90px] bg-white/70 cart-item-row" data-name="@cart.Product.Name" data-date="@group.Key.ToString("dd/MM/yyyy")" data-cart-id="@cart.Id">
+                                <input type="checkbox" class="cart-item-checkbox form-checkbox w-5 h-5 accent-blue-600 mr-2" data-day="@dayKey" />
+                                <div class="w-20 h-20 flex-shrink-0 bg-white rounded-lg overflow-hidden border border-slate-200 shadow-sm">
+                                    <img src="@cart.Product.Image"
+                                        width="80"
+                                        height="80"
+                                        class="w-full h-full object-cover"
+                                        alt="@cart.Product.Name" />
+                                </div>
+                                <div class="flex-grow flex flex-col justify-center">
+                                    <div class="flex items-center justify-between gap-2">
+                                        <h3 class="font-bold text-slate-800 font-serif text-base mb-0 line-clamp-1">@cart.Product.Name</h3>
+                                        <div class="text-blue-600 font-bold text-base whitespace-nowrap">@String.Format("{0:N0}", cart.Product.Price)₫</div>
+                                    </div>
+                                </div>
+                                <div class="flex flex-col items-center sm:items-end gap-2 min-w-[110px]">
+                                    <div class="flex items-center bg-slate-50 border border-slate-200 rounded-lg shadow-inner">
+                                        <button onclick="handleMinusQuantity(this)" class="px-3 py-1 text-slate-600 hover:text-blue-600 font-bold hover:bg-white rounded-l-lg transition-colors">-</button>
+                                        <span class="w-8 text-center text-base font-bold text-slate-800">@cart.Quantity</span>
+                                        <button onclick="handlePlusQuantity(this)" class="px-3 py-1 text-slate-600 hover:text-blue-600 font-bold hover:bg-white rounded-r-lg transition-colors">+</button>
+                                    </div>
+                                    <button onclick="handleRemoveCartItem(this)" class="text-xs text-red-400 hover:text-red-600 hover:underline flex items-center gap-1 transition-colors">Xóa</button>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            }
+            @* Nếu có cart không có CreateDate *@
+            @if (Model.Any(c => !c.CreateDate.HasValue))
+            {
+                <div class="mb-6 cart-group">
+                    <div class="flex items-center gap-2 mb-2 pl-1">
+                        <input type="checkbox" class="cart-day-checkbox form-checkbox w-5 h-5 accent-blue-600" data-day="unknown" id="day-unknown" />
+                        <label for="day-unknown" class="font-bold text-blue-700 text-base select-none cursor-pointer">Không xác định ngày</label>
+                    </div>
+                    <div class="space-y-3">
+                        @foreach (var cart in Model.Where(c => !c.CreateDate.HasValue))
+                        {
+                            <div class="glass-card border border-slate-200 shadow-lg p-3 rounded-xl flex items-center gap-4 min-h-[90px] bg-white/70 cart-item-row" data-name="@cart.Product.Name" data-date="" data-cart-id="@cart.Id">
+                                <input type="checkbox" class="cart-item-checkbox form-checkbox w-5 h-5 accent-blue-600 mr-2" data-day="unknown" />
+                                <div class="w-20 h-20 flex-shrink-0 bg-white rounded-lg overflow-hidden border border-slate-200 shadow-sm">
+                                    <img src="@cart.Product.Image"
+                                        width="80"
+                                        height="80"
+                                        class="w-full h-full object-cover"
+                                        alt="@cart.Product.Name" />
+                                </div>
+                                <div class="flex-grow flex flex-col justify-center">
+                                    <div class="flex items-center justify-between gap-2">
+                                        <h3 class="font-bold text-slate-800 font-serif text-base mb-0 line-clamp-1">@cart.Product.Name</h3>
+                                        <div class="text-blue-600 font-bold text-base whitespace-nowrap">@String.Format("{0:N0}", cart.Product.Price)₫</div>
+                                    </div>
+                                </div>
+                                <div class="flex flex-col items-center sm:items-end gap-2 min-w-[110px]">
+                                    <div class="flex items-center bg-slate-50 border border-slate-200 rounded-lg shadow-inner">
+                                        <button class="px-3 py-1 text-slate-600 hover:text-blue-600 font-bold hover:bg-white rounded-l-lg transition-colors">-</button>
+                                        <span class="w-8 text-center text-base font-bold text-slate-800">@cart.Quantity</span>
+                                        <button class="px-3 py-1 text-slate-600 hover:text-blue-600 font-bold hover:bg-white rounded-r-lg transition-colors">+</button>
+                                    </div>
+                                    <button class="text-xs text-red-400 hover:text-red-600 hover:underline flex items-center gap-1 transition-colors">Xóa</button>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            }
+            <script src="~/js/cart.js"></script>
+        </div>
+
+        <!-- Summary -->
+        <div class="xl:col-span-1">
+            <div class="glass-panel border border-slate-200 shadow-xl p-6 rounded-2xl sticky top-24 bg-white/80">
+                <h3 class="text-xl font-bold text-slate-800 mb-5 font-serif border-b border-slate-200 pb-3">Tổng Đơn Hàng</h3>
+                <div class="space-y-3 mb-6">
+                    <div class="flex justify-between text-slate-600">
+                        <span>Tạm tính</span>
+                        <span>32.000.000₫</span>
+                    </div>
+                    <div class="flex justify-between text-slate-600">
+                        <span>Vận chuyển</span>
+                        <span class="text-green-600 font-medium bg-green-50 px-2 py-0.5 rounded-full text-sm">Miễn phí</span>
+                    </div>
+                    <div class="border-t border-slate-300 pt-3 mt-1 flex justify-between items-center">
+                        <span class="font-bold text-slate-800 text-base">Tổng cộng</span>
+                        <span class="text-xl font-bold text-blue-600">32.000.000₫</span>
+                    </div>
+                </div>
+                <button class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-xl shadow-lg hover:shadow-blue-500/40 transition-all active:scale-[0.98] flex justify-center items-center gap-2 text-base">
+                    Thanh Toán
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+                    </svg>
+                </button>
+                <div class="mt-5 text-center">
+                    <a href="/products" class="text-sm text-slate-500 hover:text-blue-600 font-medium transition-colors">Tiếp tục mua sắm</a>
+                </div>
+            </div>
+        </div>
+
+                <!-- Empty State (hiện khi giỏ trống) -->
+                <!--
+  <div class="text-center py-32 glass-panel rounded-3xl mx-auto max-w-4xl">
+    <div class="w-24 h-24 bg-blue-50 rounded-full flex items-center justify-center mx-auto mb-6 shadow-inner">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-12 h-12 text-blue-400">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 10.5V6a3.75 3.75 0 10-7.5 0v4.5m11.356-1.993l1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 01-1.12-1.243l1.264-12A1.125 1.125 0 015.513 7.5h12.974c.576 0 1.059.435 1.119 1.007z" />
+      </svg>
+    </div>
+    <h2 class="text-3xl font-bold text-slate-700 mb-3 font-serif">Giỏ hàng trống</h2>
+    <p class="text-slate-500 mb-10 text-lg">Bạn chưa thêm sản phẩm nào vào giỏ hàng.</p>
+    <a href="/products" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 px-10 rounded-full transition-all shadow-lg hover:shadow-blue-500/30 hover:-translate-y-1 inline-block">
+      Khám Phá Bộ Sưu Tập
+    </a>
+  </div>
+  -->
+            </div>

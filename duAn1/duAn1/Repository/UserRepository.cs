@@ -22,11 +22,11 @@ namespace duAn1.Repository
 
         public User UserByEmail(string email)
         {
-            return _context.Users
-                .FromSqlRaw("SELECT * FROM users WHERE email = @email AND actived = 1",
-                    new SqlParameter("@email", email))
-                .AsEnumerable()
+            User user = _context.Users
+                .Where(u => u.Email == email)
                 .FirstOrDefault();
+
+            return user;
         }
     }
 }

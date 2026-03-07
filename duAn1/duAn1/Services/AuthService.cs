@@ -37,8 +37,41 @@ public class AuthService : IAuthService
         {
             return false;
         }
-        
+    }
+    public bool IsLoggedIn(HttpContext httpContext)
+    {
+        if (httpContext == null)
+            return false;
 
-       
+        if (httpContext.User == null)
+            return false;
+
+        if (!httpContext.User.Identity.IsAuthenticated)
+            return false;
+
+        var userId = httpContext.User.FindFirst("UserId")?.Value;
+
+        if (string.IsNullOrEmpty(userId))
+            return false;
+
+        return true;
+    }
+    public int? GetUserId(HttpContext httpContext)
+    {
+        if (httpContext == null)
+            return null;
+
+        if (httpContext.User == null)
+            return null;
+
+        if (!httpContext.User.Identity.IsAuthenticated)
+            return null;
+
+        var userId = httpContext.User.FindFirst("UserId")?.Value;
+
+        if (string.IsNullOrEmpty(userId))
+            return null;
+
+        return int.Parse(userId);
     }
 }

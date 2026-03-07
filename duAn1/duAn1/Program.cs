@@ -2,13 +2,14 @@
 using duAn1.Repository;
 using duAn1.Services;
 using Microsoft.EntityFrameworkCore;
-using System;
+using Microsoft.AspNetCore.Authentication.Cookies;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // ==========================
 // Add services
 // ==========================
+
 builder.Services.AddControllersWithViews();
 
 // Kết nối SQL Server
@@ -18,24 +19,47 @@ builder.Services.AddDbContext<AppDbContext>(options =>
     )
 );
 
-
-// Đăng ký UserRepository và UserService cho DI
-builder.Services.AddScoped<duAn1.Repository.UserRepository>();
+// Dependency Injection
+builder.Services.AddScoped<UserRepository>();
 builder.Services.AddScoped<UserService>();
+
 builder.Services.AddScoped<CryUtils>();
+
 builder.Services.AddScoped<ProductService>();
 builder.Services.AddScoped<ProductRepository>();
 
 builder.Services.AddScoped<CategoryService>();
 builder.Services.AddScoped<CategoryLINQ>();
-// Khi hệ thống cần IAuthService → hãy tạo ra AuthService để dùng.
+
+builder.Services.AddScoped<CartLINQ>();
+builder.Services.AddScoped<CartService>();
+
 builder.Services.AddScoped<IAuthService, AuthService>();
+
+// ==========================
+// Authentication Cookie
+// ==========================
+
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+    .AddCookie(options =>
+    {
+        options.LoginPath = "/Login/Index";        // chưa login → về login
+        options.LogoutPath = "/Login/Logout";
+        options.AccessDeniedPath = "/Login/Index";
+
+        options.Cookie.Name = "duAn1Auth";
+
+        options.ExpireTimeSpan = TimeSpan.FromDays(7);
+    });
+
+builder.Services.AddAuthorization();
 
 var app = builder.Build();
 
 // ==========================
 // Configure Middleware
 // ==========================
+
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
@@ -43,9 +67,16 @@ if (!app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
 app.UseStaticFiles();
 
 app.UseRouting();
+
+// BẮT BUỘC phải có
+app.UseAuthentication();
+
+// middleware check login giống doFilter
+app.UseMiddleware<AuthMiddleware>();
 
 app.UseAuthorization();
 

@@ -4,6 +4,7 @@ namespace duAn1.Models
 {
     public class User
     {
+
         public int Id { get; set; }
 
         public bool Actived { get; set; }

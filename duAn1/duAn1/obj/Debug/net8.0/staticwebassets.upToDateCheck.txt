@@ -2,6 +2,9 @@ wwwroot\css\header_css.css
 wwwroot\css\Home.css
 wwwroot\css\site.css
 wwwroot\favicon.ico
+wwwroot\js\cart.js
+wwwroot\js\Collection.js
+wwwroot\js\home.js
 wwwroot\js\register-validate.js
 wwwroot\js\site.js
 wwwroot\lib\bootstrap\dist\css\bootstrap-grid.css

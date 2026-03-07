@@ -1,0 +1,82 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] Jewel - Shop</title>
+
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/Home.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/duAn1.styles.css" asp-append-version="true" />
+
+    <link rel="icon" type="image/x-icon" href="~/logo_br.png" />
+
+    <!-- Toastr CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" />
+
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body>
+    <div class="flex min-h-screen bg-slate-50">
+        <partial name="_SiderBarAdmin" />
+
+
+    </div>
+
+    <!-- JS -->
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Toastr JS (PHẢI LOAD TRƯỚC KHI GỌI) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+
+
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    <!-- Script giỏ hàng: luôn load trên mọi trang có header -->
+    <script src="~/js/home.js" asp-append-version="true"></script>
+
+    <!-- Cấu hình Toastr -->
+    <script>
+        toastr.options = {
+            "closeButton": true,
+            "progressBar": true,
+            "positionClass": "toast-top-right",
+            "timeOut": "3000"
+        };
+    </script>
+
+    <!-- Toast từ Controller -->
+    @if (TempData["success"] != null)
+    {
+        <script>
+            toastr.success("@TempData["success"]");
+        </script>
+    }
+
+    @if (TempData["error"] != null)
+    {
+        <script>
+            toastr.error("@TempData["error"]");
+        </script>
+    }
+
+    @if (TempData["warning"] != null)
+    {
+        <script>
+            toastr.warning("@TempData["warning"]");
+        </script>
+    }
+
+    @if (TempData["info"] != null)
+    {
+        <script>
+            toastr.info("@TempData["info"]");
+        </script>
+    }
+
+    @await RenderSectionAsync("Scripts", required: false)
+
+</body>
+</html>

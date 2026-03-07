@@ -1,6 +1,9 @@
 ﻿using duAn1.Models;
 using duAn1.Services;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace duAn1.Controllers
 {
@@ -32,30 +35,42 @@ namespace duAn1.Controllers
         }
 
         [HttpPost]
-        public IActionResult Login(string email, string password)
+        public async Task<IActionResult> Login(string email, string password)
         {
             var user = _userService.userByEmail(email);
 
             if (user == null)
             {
-                user.Email = email;
                 ModelState.AddModelError("", "Email hoặc mật khẩu chưa đúng!");
-                return View("~/Views/Login/Index.cshtml", user);
+                return View("~/Views/Login/Index.cshtml");
             }
 
             bool isValid = _authService.VerifyPassword(user, password);
 
             if (!isValid)
             {
-                user.Email = email;
                 ModelState.AddModelError("", "Email hoặc mật khẩu chưa đúng!");
-                return View("~/Views/Login/Index.cshtml", user);
+                return View("~/Views/Login/Index.cshtml");
             }
 
-            // Nếu đúng -> đăng nhập thành công
-           // HttpContext.Session.SetString("UserEmail", user.Email);
+            // tạo claims
+            var claims = new List<Claim>
+            {
+                new Claim(ClaimTypes.Name, user.Email),
+                new Claim("UserId", user.Id.ToString()),
+                new Claim("Role", user.Role.ToString())
+            };
 
-            return View("~/Views/Home/Index.cshtml");
+            var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+
+            var principal = new ClaimsPrincipal(identity);
+
+            await HttpContext.SignInAsync(
+                CookieAuthenticationDefaults.AuthenticationScheme,
+                principal
+            );
+
+            return RedirectToAction("Index", "Home");
         }
     }
 }
