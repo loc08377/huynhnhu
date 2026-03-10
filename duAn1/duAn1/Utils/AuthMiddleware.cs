@@ -22,6 +22,8 @@ public class AuthMiddleware
             var allowPaths = new[]
             {
                 "/Login/Index",
+                "/Login/Login",
+                "/Login/Register",
                 "/Home/Register",
                 "/Home/Index",
                 "/css",

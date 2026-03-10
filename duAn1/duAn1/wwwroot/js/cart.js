@@ -129,3 +129,17 @@ document.addEventListener('DOMContentLoaded', function () {
         plusBtn.setAttribute('onclick', 'handlePlusQuantity(this)');
     });
 });
+function addCart(id) {
+    alert("Thêm sản phẩm có ID: " + id);
+
+    fetch('/Cart/AddCart?id=' + id, {
+        method: 'POST'
+    })
+        .then(res => res.json())
+        .then(data => {
+            alert("Đã thêm vào giỏ hàng");
+        })
+        .catch(err => {
+            console.log(err);
+        });
+}
