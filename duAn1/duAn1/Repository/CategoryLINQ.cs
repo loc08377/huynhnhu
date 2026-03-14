@@ -1,5 +1,4 @@
 ﻿using duAn1.Models;
-using Microsoft.EntityFrameworkCore;
 
 namespace duAn1.Repository
 {
@@ -18,6 +17,6 @@ namespace duAn1.Repository
             return categorytList;
 
         }
-        
+
     }
 }

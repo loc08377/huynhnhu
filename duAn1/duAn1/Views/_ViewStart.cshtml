@@ -1,6 +1,6 @@
 ﻿@{
     var role = Context.User.FindFirst("Role")?.Value;
     var path = Context.Request.Path.Value?.ToLower() ?? "";
-    // Nếu là admin và vào trang /admin thì dùng layout admin, còn lại dùng layout thường
-    Layout = (role == "1" && path.StartsWith("/AdminJewel")) ? "_LayoutAdmin" : "_Layout";
+    // Nếu là admin và vào trang /adminjewel thì dùng layout admin, còn lại dùng layout thường
+    Layout = (role == "1" && path.StartsWith("/adminjewel")) ? "_LayoutAdmin" : "_Layout";
 }

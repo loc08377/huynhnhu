@@ -1,6 +1,5 @@
 ﻿using duAn1.Models;
 using duAn1.Services;
-using duAn1.Utils;
 using Microsoft.AspNetCore.Identity;
 
 public class AuthService : IAuthService
@@ -33,7 +32,7 @@ public class AuthService : IAuthService
             );
             return result == PasswordVerificationResult.Success;
         }
-        catch(Exception e)
+        catch (Exception)
         {
             return false;
         }
@@ -46,7 +45,7 @@ public class AuthService : IAuthService
         if (httpContext.User == null)
             return false;
 
-        if (!httpContext.User.Identity.IsAuthenticated)
+        if (httpContext.User.Identity == null || !httpContext.User.Identity.IsAuthenticated)
             return false;
 
         var userId = httpContext.User.FindFirst("UserId")?.Value;
@@ -64,7 +63,7 @@ public class AuthService : IAuthService
         if (httpContext.User == null)
             return null;
 
-        if (!httpContext.User.Identity.IsAuthenticated)
+        if (httpContext.User.Identity == null || !httpContext.User.Identity.IsAuthenticated)
             return null;
 
         var userId = httpContext.User.FindFirst("UserId")?.Value;

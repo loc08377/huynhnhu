@@ -1,6 +1,5 @@
 ﻿using duAn1.Models;
 using duAn1.Repository;
-using Microsoft.EntityFrameworkCore;
 
 public class CartService
 {

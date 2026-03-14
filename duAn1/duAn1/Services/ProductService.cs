@@ -1,5 +1,4 @@
-﻿using duAn1.Models;
-
+﻿       
 namespace duAn1.Services
 {
     public class ProductService
@@ -17,11 +16,11 @@ namespace duAn1.Services
                 listProduct = _productRepository.getAllProduct();
                 return listProduct;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return new List<Product>();
             }
-            
+
         }
         public List<Product> getProductByCategory(int idCategory)
         {
@@ -31,9 +30,20 @@ namespace duAn1.Services
                 listProductByCategory = _productRepository.getProductByCategory(idCategory);
                 return listProductByCategory;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return new List<Product>();
+            }
+        }
+        public Product? GetProductById(int id)
+        {
+            try
+            {
+                return _productRepository.getProductById(id);
+            }
+            catch (Exception)
+            {
+                return null;
             }
         }
     }

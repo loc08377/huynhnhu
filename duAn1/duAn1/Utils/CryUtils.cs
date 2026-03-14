@@ -10,9 +10,12 @@ public class CryUtils
         _configuration = configuration;
     }
 
-    public string ComputeHmac(string text)
+    public string ComputeHmac(string? text)
     {
-        var secretKey = _configuration["Security:SecretKey"];
+        if (string.IsNullOrEmpty(text))
+            throw new ArgumentNullException(nameof(text));
+
+        var secretKey = _configuration["Security:SecretKey"] ?? throw new InvalidOperationException("Missing Security:SecretKey");
 
         var keyBytes = Encoding.UTF8.GetBytes(secretKey);
         var inputBytes = Encoding.UTF8.GetBytes(text);

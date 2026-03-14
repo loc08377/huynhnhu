@@ -1,0 +1,110 @@
+﻿<div class="space-y-6 animate-fade-in">
+
+<h1 class="text-3xl font-bold text-slate-800 font-serif">
+Quản Lý Người Dùng
+</h1>
+
+<div class="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden">
+
+<table class="w-full text-left border-collapse">
+
+<thead class="bg-slate-50 text-slate-500 text-sm font-bold uppercase">
+<tr>
+<th class="p-4">ID</th>
+<th class="p-4">Họ Tên</th>
+<th class="p-4">Email</th>
+<th class="p-4">Vai Trò</th>
+<th class="p-4">Ngày Tham Gia</th>
+<th class="p-4 text-center">Thao Tác</th>
+</tr>
+</thead>
+
+<tbody class="divide-y divide-slate-100">
+
+<tr class="hover:bg-slate-50 transition-colors" id="user-1">
+
+<td class="p-4 text-slate-500">#1</td>
+<td class="p-4 font-medium">Nguyễn Văn A</td>
+<td class="p-4 text-slate-600">vana@gmail.com</td>
+
+<td class="p-4">
+<span class="px-2 py-1 rounded-full text-xs font-bold bg-slate-100 text-slate-700">
+USER
+</span>
+</td>
+
+<td class="p-4 text-slate-500">
+10/03/2026
+</td>
+
+<td class="p-4 text-center">
+
+<button onclick="confirmDelete(1,'Nguyễn Văn A')"
+class="text-red-400 hover:text-red-600 transition-colors"
+title="Xóa người dùng">
+
+🗑
+
+</button>
+
+</td>
+
+</tr>
+
+
+<tr class="hover:bg-slate-50 transition-colors">
+
+<td class="p-4 text-slate-500">#2</td>
+<td class="p-4 font-medium">Admin System</td>
+<td class="p-4 text-slate-600">admin@gmail.com</td>
+
+<td class="p-4">
+<span class="px-2 py-1 rounded-full text-xs font-bold bg-purple-100 text-purple-700">
+ADMIN
+</span>
+</td>
+
+<td class="p-4 text-slate-500">
+01/01/2026
+</td>
+
+<td class="p-4 text-center">
+<!-- admin không có nút xoá -->
+</td>
+
+</tr>
+
+</tbody>
+
+</table>
+
+</div>
+
+</div>
+
+
+<script>
+
+function confirmDelete(userId,userName){
+
+let confirmDeleteUser = confirm(
+"Xóa Người Dùng?\n\n"+
+"Bạn có chắc chắn muốn xóa người dùng '"+userName+"' ?\n"+
+"Dữ liệu lịch sử đơn hàng của họ cũng sẽ bị ẩn."
+);
+
+if(confirmDeleteUser){
+
+let row = document.getElementById("user-"+userId);
+
+if(row){
+row.remove();
+}
+
+alert("Đã xóa người dùng thành công");
+
+}
+
+}
+
+</script>

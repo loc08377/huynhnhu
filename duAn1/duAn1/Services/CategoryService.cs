@@ -1,5 +1,4 @@
 ﻿using duAn1.Models;
-using duAn1.Repository;
 
 namespace duAn1.Services
 {
@@ -18,7 +17,7 @@ namespace duAn1.Services
                 listCategory = _categoryLINQ.GetCategory();
                 return listCategory;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return new List<Category>();
             }

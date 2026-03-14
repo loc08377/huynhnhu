@@ -1,13 +1,4 @@
-﻿using duAn1.Mappers;
-using duAn1.Models;
-using duAn1.Utils;
-using Microsoft.Data.SqlClient;
-using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using duAn1.Models;
 
 namespace duAn1.Repository
 {

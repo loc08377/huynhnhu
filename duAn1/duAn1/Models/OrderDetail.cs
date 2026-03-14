@@ -1,4 +1,4 @@
-﻿using System;
+﻿using System.ComponentModel.DataAnnotations.Schema;
 
 namespace duAn1.Models
 {
@@ -10,8 +10,14 @@ namespace duAn1.Models
 
         public int Quantity { get; set; }
 
-        public int OrderId { get; set; }
+        [Column("order_id")]
+        public int? OrderId { get; set; }
 
-        public int ProductId { get; set; }
+        [Column("product_id")]
+        public int? ProductId { get; set; }
+
+        // Navigation properties
+        public virtual Order? Order { get; set; }
+        public virtual Product? Product { get; set; }
     }
 }

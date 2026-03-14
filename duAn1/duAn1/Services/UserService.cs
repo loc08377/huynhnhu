@@ -1,10 +1,4 @@
 ﻿using duAn1.Models;
-using duAn1.Repository;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace duAn1.Services
 {
@@ -22,7 +16,7 @@ namespace duAn1.Services
             {
                 return _userRepository.UserByEmail(email);
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Console.WriteLine($"Error: {e.Message}");
                 return null;

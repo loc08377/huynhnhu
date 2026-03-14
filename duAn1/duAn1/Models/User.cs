@@ -1,4 +1,4 @@
-﻿using System;
+﻿using System.ComponentModel.DataAnnotations.Schema;
 
 namespace duAn1.Models
 {
@@ -13,6 +13,7 @@ namespace duAn1.Models
 
         public string Email { get; set; }
 
+        [Column("fullname")]
         public string? FullName { get; set; }
 
         public string Password { get; set; }

@@ -3,42 +3,35 @@ window.addEventListener('DOMContentLoaded', function() {
     updateCartCount();
 });
 
-function addCart(productId) {
 
+function addCart(productId, quantity) {
     if (!productId) {
         toastr.warning("Không tìm thấy sản phẩm");
         return;
     }
-
-    fetch(`/Cart/AddToCart?productId=${productId}&quantity=1`)
+    var qty = quantity && !isNaN(quantity) && quantity > 0 ? quantity : 1;
+    customFetch(`/Cart/AddToCart?productId=${productId}&quantity=${qty}`)
         .then(res => res.json())
         .then(data => {
-
             if (data.redirect) {
                 window.location.href = data.redirect;
                 return;
             }
-
             if (data.status) {
-
                 toastr.success(data.message);
-
-                // cập nhật số lượng cart
                 updateCartCount();
-
             } else {
                 toastr.error(data.message);
             }
-
         })
         .catch(() => {
-            toastr.error("Lỗi kết nối server");
+            return;
         });
 }
 
 
 function updateCartCount() {
-    fetch(`/Cart/CountCartBag`)
+    customFetch(`/Cart/CountCartBag`)
         .then(res => res.json())
         .then(data => {
             let badge = document.getElementById("cart-count");
@@ -53,11 +46,14 @@ function updateCartCount() {
                     badge.classList.add("hidden");
                 }
             } else {
-                toastr.error(data.message);
+                // Nếu chưa đăng nhập thì không hiện thông báo lỗi
+                if (!data.message || !/đăng nhập|login|chưa đăng nhập|not authenticated/i.test(data.message)) {
+                    return
+                }
             }
         })
         .catch(() => {
-            toastr.error("Lỗi kết nối server");
+            return;
         });
 }
 

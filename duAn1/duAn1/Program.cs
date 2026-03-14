@@ -1,8 +1,8 @@
 ﻿using duAn1.Models;
 using duAn1.Repository;
 using duAn1.Services;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -49,7 +49,7 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
 
         options.Cookie.Name = "duAn1Auth";
 
-        options.ExpireTimeSpan = TimeSpan.FromDays(7);
+           options.ExpireTimeSpan = TimeSpan.FromMinutes(1); // Cookie chỉ sống trong bao lau 
     });
 
 builder.Services.AddAuthorization();

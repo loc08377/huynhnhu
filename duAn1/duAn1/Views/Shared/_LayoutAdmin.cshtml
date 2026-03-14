@@ -22,10 +22,14 @@
     <div class="flex min-h-screen bg-slate-50">
         <partial name="_SiderBarAdmin" />
 
-
+        <main class="flex-grow ml-64 p-8">
+                @RenderBody()
+        </main>
     </div>
 
     <!-- JS -->
+    <script src="~/js/fetch-config.js" asp-append-version="true"></script>
+    <script src="~/js/ajax-interceptor.js" asp-append-version="true"></script>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 

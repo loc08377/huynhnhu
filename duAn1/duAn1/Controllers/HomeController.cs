@@ -1,9 +1,9 @@
 ﻿using duAn1.Models;
 using duAn1.Services;
+using duAn1.Utils;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authentication;
 using System.Diagnostics;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace duAn1.Controllers
 {
@@ -30,19 +30,12 @@ namespace duAn1.Controllers
             _authService = authService;
             _productService = productService;
             _categoryService = categoryService;
-            _context = context;   
+            _context = context;
         }
 
         public IActionResult Index(string error)
         {
-            if (error == "403")
-                TempData["error"] = "Bạn không có quyền truy cập";
-
-            if (error == "404")
-                TempData["error"] = "Trang không tồn tại";
-
-            if (error == "500")
-                TempData["error"] = "Hệ thống gặp lỗi ngoài ý muốn";
+            Message.HandleError(TempData, error);
             return View(_productService.GetProducts());
         }
 
@@ -57,7 +50,6 @@ namespace duAn1.Controllers
             return View("~/Views/Login/Register.cshtml");
         }
 
-        [HttpPost]
         [HttpPost]
         public IActionResult Register(User user)
         {
@@ -80,7 +72,7 @@ namespace duAn1.Controllers
             _context.Users.Add(user);
             _context.SaveChanges();
 
-            TempData["Success"] = "Đăng ký thành công!";
+            Message.HandleSuccess(TempData, "Đăng ký thành công!");
 
             return RedirectToAction("Index", "Login");
         }
@@ -127,6 +119,15 @@ namespace duAn1.Controllers
             }
 
             return PartialView("~/Views/CollectionProduct/CollectionList.cshtml", products);
+        }
+        
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Logout()
+        {
+            await HttpContext.SignOutAsync();
+            Response.Cookies.Delete("duAn1Auth");
+            return RedirectToAction("Index", "Home");
         }
     }
 }

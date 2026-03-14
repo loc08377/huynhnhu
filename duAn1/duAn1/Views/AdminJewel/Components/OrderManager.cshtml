@@ -1,0 +1,281 @@
+﻿@model List<Order>
+
+<div class="space-y-6 animate-fade-in">
+    <h1 class="text-3xl font-bold text-slate-800 font-serif">Quản Lý Đơn Hàng</h1>
+
+    <!-- Tab Navigation -->
+    <div class="flex gap-3 mb-8 overflow-x-auto pb-2">
+        <button class="status-filter-btn px-6 py-2.5 rounded-full font-semibold transition-all whitespace-nowrap bg-blue-600 text-white" data-status="">
+            Tất cả
+        </button>
+        <button class="status-filter-btn px-6 py-2.5 rounded-full font-semibold transition-all whitespace-nowrap bg-white text-slate-600 border border-slate-300 hover:border-amber-400" data-status="0">
+            <span class="inline-block w-2 h-2 bg-amber-400 rounded-full mr-2"></span>Chờ xác nhận
+        </button>
+        <button class="status-filter-btn px-6 py-2.5 rounded-full font-semibold transition-all whitespace-nowrap bg-white text-slate-600 border border-slate-300 hover:border-blue-400" data-status="1">
+            <span class="inline-block w-2 h-2 bg-blue-400 rounded-full mr-2"></span>Đang giao
+        </button>
+        <button class="status-filter-btn px-6 py-2.5 rounded-full font-semibold transition-all whitespace-nowrap bg-white text-slate-600 border border-slate-300 hover:border-green-400" data-status="2">
+            <span class="inline-block w-2 h-2 bg-green-400 rounded-full mr-2"></span>Đã nhận được
+        </button>
+        <button class="status-filter-btn px-6 py-2.5 rounded-full font-semibold transition-all whitespace-nowrap bg-white text-slate-600 border border-slate-300 hover:border-red-400" data-status="3">
+            <span class="inline-block w-2 h-2 bg-red-400 rounded-full mr-2"></span>Đã hủy
+        </button>
+        <button class="status-filter-btn px-6 py-2.5 rounded-full font-semibold transition-all whitespace-nowrap bg-white text-slate-600 border border-slate-300 hover:border-gray-400" data-status="4">
+            <span class="inline-block w-2 h-2 bg-gray-400 rounded-full mr-2"></span>Từ chối
+        </button>
+    </div>
+
+    <!-- Orders List -->
+    <div class="space-y-4">
+        @if (Model != null && Model.Count() > 0)
+        {
+            @foreach (var order in Model)
+            {
+                var orderDetailsList = ViewBag.OrderDetailsMap != null && ViewBag.OrderDetailsMap.ContainsKey(order.Id) ?
+                    ViewBag.OrderDetailsMap[order.Id] as List<dynamic> :
+                    new List<dynamic>();
+                var totalAmount = orderDetailsList != null ? 
+                    orderDetailsList.Sum(od => (int)od.Price * (int)od.Quantity) : 0;
+
+                var statusText = order.payment_status switch
+                {
+                    0 => "Chờ xác nhận",
+                    1 => "Đang giao",
+                    2 => "Đã nhận được",
+                    3 => "Đã hủy",
+                    4 => "Từ chối",
+                    _ => "Không rõ"
+                };
+
+                <div class="order-item border border-slate-200 rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-shadow bg-white" data-status="@order.payment_status" data-order-id="@order.Id" data-order-status="@order.payment_status">
+                    <!-- Order Header -->
+                    <div class="bg-gradient-to-r from-slate-50 to-slate-100 p-4 flex items-center justify-between border-b border-slate-200 cursor-pointer order-header" onclick="toggleOrderDetails(this)">
+                        <div class="flex items-center gap-4 flex-grow">
+                            <div>
+                                <h3 class="font-bold text-slate-800 text-lg">Đơn hàng #@order.Id</h3>
+                                <p class="text-sm text-slate-500">Khách hàng: @(order.User?.FullName ?? "N/A") | Ngày đặt: @order.CreateDate.ToString("dd/MM/yyyy HH:mm")</p>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            @{
+                                var badgeClass = order.payment_status switch
+                                {
+                                    0 => "bg-amber-100 text-amber-700",
+                                    1 => "bg-blue-100 text-blue-700",
+                                    2 => "bg-green-100 text-green-700",
+                                    3 => "bg-red-100 text-red-700",
+                                    4 => "bg-gray-100 text-gray-700",
+                                    _ => "bg-slate-100 text-slate-700"
+                                };
+                            }
+                            <div class="inline-block px-3 py-1.5 rounded-full text-sm font-semibold @badgeClass">
+                                @statusText
+                            </div>
+                            <p class="text-xl font-bold text-blue-600 mt-2">@totalAmount.ToString("N0") ₫</p>
+                        </div>
+                    </div>
+
+                    <!-- Order Details (Collapsible) -->
+                    <div class="order-details hidden">
+                        <div class="p-4 space-y-3 max-h-80 overflow-y-auto">
+                            @if (orderDetailsList != null && orderDetailsList.Count > 0)
+                            {
+                                @foreach (var detail in orderDetailsList)
+                                {
+                                    <div class="flex gap-3 pb-3 border-b border-slate-100 last:border-b-0">
+                                        <div class="w-16 h-16 bg-slate-100 rounded-lg overflow-hidden flex-shrink-0">
+                                            <img src="@detail.ProductImage" 
+                                                 alt="@detail.ProductName" 
+                                                 class="w-full h-full object-cover" 
+                                                 onerror="this.src='/images/no-image.jpg'" />
+                                        </div>
+                                        <div class="flex-grow">
+                                            <p class="font-semibold text-slate-700 line-clamp-1">@detail.ProductName</p>
+                                            <p class="text-sm text-slate-500">x@detail.Quantity × @detail.Price.ToString("N0")₫</p>
+                                            <p class="font-bold text-blue-600">@(detail.Total.ToString("N0"))₫</p>
+                                        </div>
+                                    </div>
+                                }
+                            }
+                        </div>
+
+                        <!-- Admin Actions -->
+                        <div class="bg-slate-50 p-4 border-t border-slate-200">
+                            @if (order.payment_status == 0)
+                            {
+                                <div class="flex gap-2">
+                                    <button type="button" class="confirmOrderBtn flex-1 bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-lg transition-colors" data-order-id="@order.Id">
+                                        ✓ Xác nhận
+                                    </button>
+                                    <button type="button" class="rejectOrderBtn flex-1 bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-lg transition-colors" data-order-id="@order.Id">
+                                        ✖ Từ chối
+                                    </button>
+                                </div>
+                            }
+                            else if (order.payment_status == 1)
+                            {
+                                <div class="text-slate-600 font-semibold text-center py-2">
+                                    ⏳ Chờ khách hàng xác nhận nhận hàng
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="text-slate-600 font-semibold text-center py-2">
+                                    ℹ️ Đơn hàng đã hoàn tất
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+            }
+        }
+        else
+        {
+            <div class="text-center py-12 bg-white rounded-2xl border border-slate-200">
+                <p class="text-slate-500 text-lg">Không có đơn hàng nào</p>
+            </div>
+        }
+    </div>
+</div>
+
+<script>
+// Tab filtering
+document.querySelectorAll('.status-filter-btn').forEach(btn => {
+    btn.onclick = function(e) {
+        e.preventDefault();
+        const status = this.dataset.status;
+        
+        // Update active tab
+        document.querySelectorAll('.status-filter-btn').forEach(b => {
+            b.classList.remove('bg-blue-600', 'text-white');
+            b.classList.add('bg-white', 'text-slate-600', 'border', 'border-slate-300');
+        });
+        this.classList.remove('bg-white', 'text-slate-600', 'border', 'border-slate-300');
+        this.classList.add('bg-blue-600', 'text-white');
+        
+        // Filter orders
+        document.querySelectorAll('.order-item').forEach(item => {
+            const itemStatus = item.dataset.status;
+            if (status === '' || itemStatus === status) {
+                item.style.display = 'block';
+            } else {
+                item.style.display = 'none';
+            }
+        });
+    };
+});
+
+// Toggle order details
+function toggleOrderDetails(headerEl) {
+    const detailsEl = headerEl.nextElementSibling;
+    detailsEl.classList.toggle('hidden');
+}
+
+// Confirm order button
+document.querySelectorAll('.confirmOrderBtn').forEach(btn => {
+    btn.onclick = async function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        
+        const orderId = this.dataset.orderId;
+        const orderItem = document.querySelector(`[data-order-id="${orderId}"]`);
+        const orderStatus = parseInt(orderItem.dataset.orderStatus);
+        
+        // Check current status
+        if (orderStatus !== 0) {
+            toastr.error("Đơn hàng không ở trạng thái chờ xác nhận");
+            return;
+        }
+        
+        if (!confirm("Xác nhận đơn hàng #" + orderId + "?")) return;
+
+        try {
+            const response = await fetch(`/AdminJewel/UpdateOrderStatus/${orderId}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ Status: 1 })
+            });
+            const data = await response.json();
+
+            if (data.success) {
+                toastr.success(data.message);
+                setTimeout(() => location.reload(), 1500);
+            } else {
+                toastr.error(data.message);
+            }
+        } catch (error) {
+            toastr.error("Lỗi: " + error.message);
+        }
+    };
+});
+
+// Reject order button
+document.querySelectorAll('.rejectOrderBtn').forEach(btn => {
+    btn.onclick = async function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        
+        const orderId = this.dataset.orderId;
+        const orderItem = document.querySelector(`[data-order-id="${orderId}"]`);
+        const orderStatus = parseInt(orderItem.dataset.orderStatus);
+        
+        // Check current status
+        if (orderStatus !== 0) {
+            toastr.error("Đơn hàng không ở trạng thái chờ xác nhận");
+            return;
+        }
+        
+        if (!confirm("Từ chối đơn hàng #" + orderId + "?")) return;
+
+        try {
+            const response = await fetch(`/AdminJewel/UpdateOrderStatus/${orderId}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ Status: 4 })
+            });
+            const data = await response.json();
+
+            if (data.success) {
+                toastr.success(data.message);
+                setTimeout(() => location.reload(), 1500);
+            } else {
+                toastr.error(data.message);
+            }
+        } catch (error) {
+            toastr.error("Lỗi: " + error.message);
+        }
+    };
+});
+</script>
+
+statusSpan.innerText=status;
+
+statusSpan.className="px-2 py-1 rounded-full text-xs font-bold";
+
+if(status==="pending"){
+statusSpan.classList.add("bg-yellow-100","text-yellow-700");
+}
+
+if(status==="shipping"){
+statusSpan.classList.add("bg-blue-100","text-blue-700");
+}
+
+if(status==="completed"){
+statusSpan.classList.add("bg-green-100","text-green-700");
+}
+
+if(status==="cancelled"){
+statusSpan.classList.add("bg-red-100","text-red-700");
+}
+
+alert("Đã cập nhật trạng thái thành công");
+
+}
+
+}
+
+</script>

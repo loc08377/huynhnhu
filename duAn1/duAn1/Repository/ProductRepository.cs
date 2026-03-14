@@ -1,5 +1,5 @@
-﻿using duAn1.Models;
-using Microsoft.Data.SqlClient;
+﻿        
+using duAn1.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace duAn1.Repository
@@ -18,7 +18,7 @@ namespace duAn1.Repository
             productList = _context.Products
                 .Include(p => p.Category)
                 .ToList();
-            return productList; 
+            return productList;
 
         }
         public List<Product> getProductByCategory(int idCategory)
@@ -29,6 +29,10 @@ namespace duAn1.Repository
                 .Where(p => p.CategoryId == idCategory)
                 .ToList();
             return listProductByCategory;
+        }
+        public Product getProductById(int id)
+        {
+            return _context.Products.Include(p => p.Category).FirstOrDefault(p => p.Id == id);
         }
     }
 }

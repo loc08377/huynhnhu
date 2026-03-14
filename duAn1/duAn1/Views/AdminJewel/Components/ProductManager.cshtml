@@ -1,0 +1,287 @@
+﻿@model IEnumerable<Product>
+
+<div class="space-y-6 animate-fade-in">
+
+  <div class="flex justify-between items-center">
+    <h1 class="text-3xl font-bold text-slate-800 font-serif">Quản Lý Sản Phẩm</h1>
+
+    <button id="toggleFormBtn" type="button"
+      class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-bold shadow-md transition-colors flex items-center gap-2">
+
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+        stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+      </svg>
+
+      <span id="toggleText">Thêm Sản Phẩm</span>
+    </button>
+  </div>
+
+  <!-- FORM -->
+  <div id="addForm" class="bg-white p-6 rounded-2xl shadow-md border border-slate-100 mb-6 hidden">
+    <h3 id="formTitle" class="font-bold text-lg mb-4 text-slate-700">Thêm Sản Phẩm Mới</h3>
+
+    <form id="productForm" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      
+      <input type="hidden" id="productId" />
+
+      <input id="productName" type="text" placeholder="Tên sản phẩm" class="border p-2 rounded-lg outline-none focus:border-blue-500" required="required" />
+
+      <select id="categoryId" class="border p-2 rounded-lg outline-none focus:border-blue-500 bg-white" required="required">
+        <option value="">-- Chọn danh mục --</option>
+        @foreach(var cat in (IEnumerable<Category>)ViewBag.Categories)
+        {
+          <option value="@cat.Id">@cat.Name</option>
+        }
+      </select>
+
+      <input id="price" type="number" placeholder="Giá (VND)" class="border p-2 rounded-lg outline-none focus:border-blue-500" min="0" required="required" />
+
+      <input id="description" type="text" placeholder="Mô tả sản phẩm" class="border p-2 rounded-lg outline-none focus:border-blue-500" required="required" />
+
+      <div class="md:col-span-2">
+        <label class="block text-slate-600 font-medium mb-2">Link Hình Ảnh</label>
+        <input id="image" type="text" placeholder="Nhập URL hình ảnh (VD: https://example.com/image.jpg)" class="border p-2 rounded-lg outline-none focus:border-blue-500 w-full" required="required" />
+      </div>
+
+      <div class="md:col-span-2 flex gap-2">
+        <button id="saveBtnProduct" type="button" class="bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded-lg font-bold">Lưu Sản Phẩm</button>
+        <button id="cancelBtnProduct" type="button" class="bg-gray-400 hover:bg-gray-500 text-white px-6 py-2 rounded-lg font-bold">Hủy</button>
+      </div>
+
+    </form>
+  </div>
+
+  <!-- TABLE -->
+  <div class="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden">
+    <table class="w-full text-left border-collapse">
+      <thead class="bg-slate-50 text-slate-500 text-sm font-bold uppercase">
+        <tr>
+          <th class="p-4">Hình Ảnh</th>
+          <th class="p-4">Tên Sản Phẩm</th>
+          <th class="p-4">Danh Mục</th>
+          <th class="p-4">Giá</th>
+          <th class="p-4 text-center">Hành Động</th>
+        </tr>
+      </thead>
+
+      <tbody class="divide-y divide-slate-100" id="productTableBody">
+        @if(Model != null && Model.Count() > 0)
+        {
+          @foreach(var product in Model.Where(p => p.Actived == true))
+          {
+            <tr class="hover:bg-slate-50 transition-colors">
+              <td class="p-4">
+                <div class="w-12 h-12 bg-slate-100 rounded-lg overflow-hidden">
+                  <img src="@product.Image" alt="@product.Name" class="object-cover w-full h-full" onerror="this.src='/images/no-image.jpg'" />
+                </div>
+              </td>
+
+              <td class="p-4 font-medium text-slate-800">@product.Name</td>
+
+              <td class="p-4 text-slate-500 capitalize">@(product.Category?.Name ?? "N/A")</td>
+
+              <td class="p-4 text-blue-600 font-bold">@(product.Price?.ToString("N0") ?? "0") ₫</td>
+
+              <td class="p-4 text-center flex gap-2 justify-center">
+                <button type="button" class="editBtn text-blue-400 hover:text-blue-600 transition-colors p-2" data-id="@product.Id" data-name="@product.Name" data-category="@product.CategoryId" data-price="@product.Price" data-description="@product.Description" data-image="@product.Image">
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 9l-4.663-4.663" />
+                  </svg>
+                </button>
+                <button type="button" class="deleteBtn text-red-400 hover:text-red-600 transition-colors p-2" data-id="@product.Id">
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0" />
+                  </svg>
+                </button>
+              </td>
+            </tr>
+          }
+        }
+      </tbody>
+    </table>
+
+    @if(Model == null || Model.Count() == 0 || !Model.Any(p => p.Actived == true))
+    {
+      <div class="p-8 text-center">
+        <p class="text-slate-500">Chưa có sản phẩm nào</p>
+      </div>
+    }
+  </div>
+
+</div>
+
+<script>
+const btn = document.getElementById("toggleFormBtn");
+const form = document.getElementById("addForm");
+const text = document.getElementById("toggleText");
+const formTitle = document.getElementById("formTitle");
+const productForm = document.getElementById("productForm");
+const saveBtn = document.getElementById("saveBtnProduct");
+const cancelBtn = document.getElementById("cancelBtnProduct");
+const productIdInput = document.getElementById("productId");
+
+let show = false;
+let isEditMode = false;
+
+btn.onclick = function () {
+  show = !show;
+  if (show) {
+    form.classList.remove("hidden");
+    text.innerText = "Hủy";
+    isEditMode = false;
+    productIdInput.value = "";
+    formTitle.innerText = "Thêm Sản Phẩm Mới";
+    saveBtn.innerText = "Lưu Sản Phẩm";
+    productForm.reset();
+  } else {
+    form.classList.add("hidden");
+    text.innerText = "Thêm Sản Phẩm";
+    productForm.reset();
+  }
+};
+
+cancelBtn.onclick = function() {
+  show = false;
+  form.classList.add("hidden");
+  text.innerText = "Thêm Sản Phẩm";
+  isEditMode = false;
+  productIdInput.value = "";
+  productForm.reset();
+};
+
+// Edit button handler
+document.querySelectorAll(".editBtn").forEach(btn => {
+  btn.onclick = function(e) {
+    e.preventDefault();
+    const productId = this.dataset.id;
+    const name = this.dataset.name;
+    const categoryId = this.dataset.category;
+    const price = this.dataset.price;
+    const description = this.dataset.description;
+    const image = this.dataset.image;
+
+    // Populate form with product data
+    document.getElementById("productName").value = name;
+    document.getElementById("categoryId").value = categoryId;
+    document.getElementById("price").value = price;
+    document.getElementById("description").value = description;
+    document.getElementById("image").value = image;
+    productIdInput.value = productId;
+
+    // Switch to edit mode
+    isEditMode = true;
+    formTitle.innerText = "Chỉnh Sửa Sản Phẩm";
+    saveBtn.innerText = "Cập Nhật Sản Phẩm";
+
+    // Scroll and show form
+    form.classList.remove("hidden");
+    form.scrollIntoView({ behavior: "smooth" });
+  };
+});
+
+saveBtn.onclick = async function() {
+  const name = document.getElementById("productName").value.trim();
+  const categoryId = document.getElementById("categoryId").value;
+  const price = document.getElementById("price").value;
+  const description = document.getElementById("description").value.trim();
+  const image = document.getElementById("image").value.trim();
+
+  // Validation
+  if (!name) {
+    toastr.error("Vui lòng nhập tên sản phẩm");
+    return;
+  }
+  if (!categoryId) {
+    toastr.error("Vui lòng chọn danh mục");
+    return;
+  }
+  if (!price || price <= 0) {
+    toastr.error("Vui lòng nhập giá hợp lệ");
+    return;
+  }
+  if (!description) {
+    toastr.error("Vui lòng nhập mô tả");
+    return;
+  }
+  if (!image) {
+    toastr.error("Vui lòng nhập link hình ảnh");
+    return;
+  }
+
+  // URL validation
+  try {
+    new URL(image);
+  } catch (e) {
+    toastr.error("Vui lòng nhập link hình ảnh hợp lệ (bắt đầu bằng http:// hoặc https://)");
+    return;
+  }
+
+  const endpoint = isEditMode ? `/AdminJewel/EditProduct/${productIdInput.value}` : "/AdminJewel/AddProduct";
+  const method = "POST";
+
+  const params = new URLSearchParams();
+  params.append("name", name);
+  params.append("categoryId", categoryId);
+  params.append("price", price);
+  params.append("description", description);
+  params.append("image", image);
+
+  try {
+    const response = await fetch(endpoint, {
+      method: method,
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded"
+      },
+      body: params.toString()
+    });
+    const data = await response.json();
+    
+    if (data.success) {
+      toastr.success(data.message);
+      productForm.reset();
+      show = false;
+      form.classList.add("hidden");
+      text.innerText = "Thêm Sản Phẩm";
+      isEditMode = false;
+      productIdInput.value = "";
+      setTimeout(() => {
+        location.reload();
+      }, 1500);
+    } else {
+      toastr.error(data.message);
+    }
+  } catch (error) {
+    toastr.error("Lỗi: " + error.message);
+  }
+};
+
+// Delete button handler
+document.querySelectorAll(".deleteBtn").forEach(btn => {
+  btn.onclick = async function(e) {
+    e.preventDefault();
+    const productId = this.dataset.id;
+    const confirmed = confirm("Bạn có chắc chắn muốn xóa sản phẩm này không?");
+    
+    if (!confirmed) return;
+
+    try {
+      const response = await fetch(`/AdminJewel/DeleteProduct/${productId}`, {
+        method: "POST"
+      });
+      const data = await response.json();
+      
+      if (data.success) {
+        toastr.success(data.message);
+        setTimeout(() => {
+          location.reload();
+        }, 1500);
+      } else {
+        toastr.error(data.message);
+      }
+    } catch (error) {
+      toastr.error("Lỗi: " + error.message);
+    }
+  };
+});
+</script>

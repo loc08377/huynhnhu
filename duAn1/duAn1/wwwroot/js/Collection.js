@@ -1,12 +1,16 @@
 function filterCategory(id, el) {
 
     document.querySelectorAll(".category-btn").forEach(btn => {
-        btn.classList.remove("bg-blue-600", "text-white");
-        btn.classList.add("bg-white", "text-slate-600");
+        btn.classList.remove("bg-blue-600");
+        btn.classList.remove("text-white");
+        btn.classList.add("bg-white");
+        btn.classList.add("text-slate-600");
     });
 
-    el.classList.remove("bg-white", "text-slate-600");
-    el.classList.add("bg-blue-600", "text-white");
+    el.classList.remove("bg-white");
+    el.classList.remove("text-slate-600");
+    el.classList.add("bg-blue-600");
+    el.classList.add("text-white");
 
 
     let url = '/Home/loadProductList';
@@ -15,7 +19,7 @@ function filterCategory(id, el) {
         url += '?categoryId=' + id;
     }
 
-    fetch(url)
+    customFetch(url)
         .then(res => res.text())
         .then(html => {
             document.getElementById("product-container").innerHTML = html;

@@ -1,4 +1,5 @@
 ﻿using duAn1.Models;
+using duAn1.Utils;
 using duAn1.Services;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -29,8 +30,10 @@ namespace duAn1.Controllers
 
 
         [HttpGet]
-        public IActionResult Index()
+        public IActionResult Index(string error)
         {
+            // gọi hàm trong util để thông báo lỗi url trả về
+            Message.HandleError(TempData, error);
             return View();
         }
 
@@ -69,6 +72,12 @@ namespace duAn1.Controllers
                 CookieAuthenticationDefaults.AuthenticationScheme,
                 principal
             );
+
+            // Nếu là admin (role = 1) thì redirect tới admin dashboard, còn lại về home
+            if (user.Role == 1)
+            {
+                return RedirectToAction("Dashboard", "Admin");
+            }
 
             return RedirectToAction("Index", "Home");
         }

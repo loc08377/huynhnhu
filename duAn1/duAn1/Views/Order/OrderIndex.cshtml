@@ -1,0 +1,319 @@
+@model List<Order>
+
+<div class="w-full px-4 md:px-8 py-8 min-h-screen">
+    <h1 class="text-4xl font-bold text-slate-800 mb-8 font-serif">Đơn Hàng Của Bạn</h1>
+
+    <!-- Tab Navigation -->
+    <div class="flex gap-3 mb-8 overflow-x-auto pb-2">
+        <button class="category-btn status-filter px-6 py-2.5 rounded-full font-semibold transition-all whitespace-nowrap bg-blue-600 text-white" data-status="">
+            Tất cả
+        </button>
+        <button class="category-btn status-filter px-6 py-2.5 rounded-full font-semibold transition-all whitespace-nowrap bg-white text-slate-600 border border-slate-300 hover:border-amber-400" data-status="0">
+            <span class="inline-block w-2 h-2 bg-amber-400 rounded-full mr-2"></span>Chờ xác nhận
+        </button>
+        <button class="category-btn status-filter px-6 py-2.5 rounded-full font-semibold transition-all whitespace-nowrap bg-white text-slate-600 border border-slate-300 hover:border-blue-400" data-status="1">
+            <span class="inline-block w-2 h-2 bg-blue-400 rounded-full mr-2"></span>Đang giao
+        </button>
+        <button class="category-btn status-filter px-6 py-2.5 rounded-full font-semibold transition-all whitespace-nowrap bg-white text-slate-600 border border-slate-300 hover:border-green-400" data-status="2">
+            <span class="inline-block w-2 h-2 bg-green-400 rounded-full mr-2"></span>Đã nhận được
+        </button>
+        <button class="category-btn status-filter px-6 py-2.5 rounded-full font-semibold transition-all whitespace-nowrap bg-white text-slate-600 border border-slate-300 hover:border-red-400" data-status="3">
+            <span class="inline-block w-2 h-2 bg-red-400 rounded-full mr-2"></span>Đã hủy
+        </button>
+        <button class="category-btn status-filter px-6 py-2.5 rounded-full font-semibold transition-all whitespace-nowrap bg-white text-slate-600 border border-slate-300 hover:border-gray-400" data-status="4">
+            <span class="inline-block w-2 h-2 bg-gray-400 rounded-full mr-2"></span>Từ chối
+        </button>
+    </div>
+
+    <!-- Orders List -->
+    <div class="grid grid-cols-1 gap-4">
+        @if (Model != null && Model.Count() > 0)
+        {
+            @foreach (var order in Model)
+            {
+                // Lấy chi tiết đơn hàng
+                var orderDetailsList = ViewBag.OrderDetailsMap != null && ViewBag.OrderDetailsMap.ContainsKey(order.Id) ?
+                    ViewBag.OrderDetailsMap[order.Id] as List<dynamic> :
+                    new List<dynamic>();
+                var totalAmount = orderDetailsList != null ? 
+                    orderDetailsList.Sum(od => (int)od.Price * (int)od.Quantity) : 0;
+
+                var statusText = order.payment_status switch
+                {
+                    0 => "Chờ xác nhận",
+                    1 => "Đang giao",
+                    2 => "Đã nhận được",
+                    3 => "Đã hủy",
+                    4 => "Từ chối",
+                    _ => "Không rõ"
+                };
+
+                <div class="order-item border border-slate-200 rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-shadow bg-white" data-status="@order.payment_status">
+                    <!-- Order Header -->
+                    <div class="bg-gradient-to-r from-slate-50 to-slate-100 p-4 flex items-center justify-between border-b border-slate-200">
+                        <div class="flex items-center gap-4 flex-grow">
+                            <div>
+                                <h3 class="font-bold text-slate-800 text-lg">Đơn hàng #@order.Id</h3>
+                                <p class="text-sm text-slate-500">Ngày đặt: @order.CreateDate.ToString("dd/MM/yyyy HH:mm")</p>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            @{
+                                var badgeClass = order.payment_status switch
+                                {
+                                    0 => "bg-amber-100 text-amber-700",
+                                    1 => "bg-blue-100 text-blue-700",
+                                    2 => "bg-green-100 text-green-700",
+                                    3 => "bg-red-100 text-red-700",
+                                    4 => "bg-gray-100 text-gray-700",
+                                    _ => "bg-slate-100 text-slate-700"
+                                };
+                            }
+                            <div class="inline-block px-3 py-1.5 rounded-full text-sm font-semibold @badgeClass">
+                                @statusText
+                            </div>
+                            <p class="text-xl font-bold text-blue-600 mt-2">@totalAmount.ToString("N0") ₫</p>
+                        </div>
+                    </div>
+
+                    <!-- Order Details (Collapsible) -->
+                    <div class="order-details hidden">
+                        <div class="p-4 space-y-3 max-h-80 overflow-y-auto">
+                            @if (orderDetailsList != null && orderDetailsList.Count > 0)
+                            {
+                                @foreach (var detail in orderDetailsList)
+                                {
+                                    <div class="flex gap-3 pb-3 border-b border-slate-100 last:border-b-0">
+                                        <div class="w-16 h-16 bg-slate-100 rounded-lg overflow-hidden flex-shrink-0">
+                                            <img src="@detail.ProductImage" 
+                                                 alt="@detail.ProductName" 
+                                                 class="w-full h-full object-cover" 
+                                                 onerror="this.src='/images/no-image.jpg'" />
+                                        </div>
+                                        <div class="flex-grow">
+                                            <p class="font-semibold text-slate-700 line-clamp-1">@detail.ProductName</p>
+                                            <p class="text-sm text-slate-500">x@detail.Quantity × @detail.Price.ToString("N0")₫</p>
+                                            <p class="font-bold text-blue-600">@(detail.Total.ToString("N0"))₫</p>
+                                        </div>
+                                    </div>
+                                }
+                            }
+                            else
+                            {
+                                <p class="text-slate-500 text-center py-4">Không có sản phẩm</p>
+                            }
+                        </div>
+
+                        <!-- Order Info -->
+                        <div class="p-4 bg-slate-50 border-t border-slate-200 space-y-2">
+                            <div class="flex justify-between text-sm">
+                                <span class="text-slate-600">Địa chỉ giao:</span>
+                                <span class="font-semibold text-slate-800">@order.Address</span>
+                            </div>
+                            @if (order.payment_status == 0)
+                            {
+                                <div class="flex gap-2 mt-4 pt-4 border-t border-slate-200">
+                                    <button onclick="cancelOrder(@order.Id)" class="flex-1 bg-red-600 hover:bg-red-700 text-white font-semibold py-2 px-4 rounded-lg transition-colors">
+                                        Hủy đơn hàng
+                                    </button>
+                                </div>
+                            }
+                            @if (order.payment_status == 1)
+                            {
+                                <div class="flex gap-2 mt-4 pt-4 border-t border-slate-200">
+                                    <button onclick="confirmReceivedOrder(@order.Id)" class="flex-1 bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded-lg transition-colors">
+                                        Xác nhận đã nhận hàng
+                                    </button>
+                                </div>
+                            }
+                        </div>
+                    </div>
+
+                    <!-- Toggle Button -->
+                    <button onclick="toggleOrderDetails(this)" class="w-full bg-slate-50 hover:bg-slate-100 border-t border-slate-200 py-3 text-slate-600 hover:text-blue-600 font-semibold transition-colors flex items-center justify-center gap-2">
+                        <span class="toggle-text">Xem chi tiết</span>
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 toggle-icon">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
+                        </svg>
+                    </button>
+                </div>
+            }
+        }
+        else
+        {
+            <div class="text-center py-20">
+                <div class="w-24 h-24 bg-slate-100 rounded-full flex items-center justify-center mx-auto mb-6 shadow-inner">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-12 h-12 text-slate-400">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h3.75M9 15h3.75M9 18h3.75m3 .75H18a2.25 2.25 0 002.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 00-1.123-.08m-5.801 0c-.065.21-.1.433-.1.66V18a2.25 2.25 0 002.25 2.25h10.5" />
+                    </svg>
+                </div>
+                <h2 class="text-2xl font-bold text-slate-700 mb-2 font-serif">Chưa có đơn hàng nào</h2>
+                <p class="text-slate-500 mb-8">Bạn chưa đặt hàng nào. Hãy mua sắm ngay!</p>
+                <a href="/Home/Collection" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-8 rounded-full transition-all shadow-lg hover:shadow-blue-500/30 inline-block">
+                    Khám Phá Bộ Sưu Tập
+                </a>
+            </div>
+        }
+    </div>
+</div>
+
+<script>
+    // Toggle order details
+    window.toggleOrderDetails = function(btn) {
+        const orderItem = btn.closest('.order-item');
+        const details = orderItem.querySelector('.order-details');
+        const toggleIcon = btn.querySelector('.toggle-icon');
+        const toggleText = btn.querySelector('.toggle-text');
+
+        details.classList.toggle('hidden');
+        toggleIcon.classList.toggle('rotate-180');
+        toggleText.textContent = details.classList.contains('hidden') ? 'Xem chi tiết' : 'Ẩn chi tiết';
+    };
+
+    // Filter by status
+    document.querySelectorAll('.status-filter').forEach(btn => {
+        btn.addEventListener('click', function() {
+            const status = this.dataset.status;
+
+            // Update button styles
+            document.querySelectorAll('.status-filter').forEach(b => {
+                b.classList.remove('bg-blue-600', 'text-white');
+                b.classList.add('bg-white', 'text-slate-600', 'border', 'border-slate-300');
+            });
+            this.classList.remove('bg-white', 'text-slate-600', 'border', 'border-slate-300');
+            this.classList.add('bg-blue-600', 'text-white');
+
+            // Filter orders
+            document.querySelectorAll('.order-item').forEach(item => {
+                if (status === '') {
+                    item.style.display = '';
+                } else {
+                    item.style.display = item.dataset.status === status ? '' : 'none';
+                }
+            });
+        });
+    });
+
+    // Cancel order with status validation
+    window.cancelOrder = function(orderId) {
+        // Lấy status hiện tại từ DOM
+        const orderItem = document.querySelector(`[data-status]`);
+        let currentStatus = null;
+        
+        // Tìm order item với id tương ứng
+        const allItems = document.querySelectorAll('.order-item');
+        for (let item of allItems) {
+            const heading = item.querySelector('h3');
+            if (heading && heading.textContent.includes(orderId)) {
+                currentStatus = parseInt(item.dataset.status);
+                break;
+            }
+        }
+
+        // Kiểm tra status client-side trước
+        if (currentStatus === null) {
+            toastr.error('Không thể xác định trạng thái đơn hàng');
+            return;
+        }
+
+        // Chỉ cho phép hủy nếu status = 0 (Chờ xác nhận)
+        if (currentStatus !== 0) {
+            const statusNames = {
+                1: 'Đơn hàng đã được xác nhận và đang giao, không thể hủy',
+                2: 'Đơn hàng đã hoàn thành, không thể hủy',
+                3: 'Đơn hàng đã bị hủy',
+                4: 'Đơn hàng bị từ chối'
+            };
+            toastr.error(statusNames[currentStatus] || 'Không thể hủy đơn hàng này');
+            location.reload(); // Reload để update status
+            return;
+        }
+
+        if (!confirm('Bạn có chắc muốn hủy đơn hàng này?')) return;
+
+        customFetch(`/Order/CancelOrder?orderId=${orderId}`, {
+            method: 'POST'
+        })
+            .then(res => res.json())
+            .then(data => {
+                if (data.success) {
+                    toastr.success(data.message);
+                    setTimeout(() => location.reload(), 1500);
+                } else {
+                    // Nếu server trả về lỗi (status đã thay đổi)
+                    toastr.error(data.message || 'Hủy đơn hàng thất bại');
+                    setTimeout(() => location.reload(), 1500);
+                }
+            })
+            .catch(err => {
+                console.error(err);
+                toastr.error('Có lỗi xảy ra khi gửi yêu cầu');
+            });
+    };
+
+    // Confirm received order with status validation
+    window.confirmReceivedOrder = function(orderId) {
+        // Lấy status hiện tại từ DOM
+        let currentStatus = null;
+        
+        // Tìm order item với id tương ứng
+        const allItems = document.querySelectorAll('.order-item');
+        for (let item of allItems) {
+            const heading = item.querySelector('h3');
+            if (heading && heading.textContent.includes(orderId)) {
+                currentStatus = parseInt(item.dataset.status);
+                break;
+            }
+        }
+
+        // Kiểm tra status client-side trước
+        if (currentStatus === null) {
+            toastr.error('Không thể xác định trạng thái đơn hàng');
+            return;
+        }
+
+        // Chỉ cho phép xác nhận nếu status = 1 (Đang giao)
+        if (currentStatus !== 1) {
+            const statusNames = {
+                0: 'Đơn hàng chưa được xác nhận bởi admin',
+                2: 'Đơn hàng đã xác nhận nhận hàng rồi',
+                3: 'Đơn hàng đã bị hủy',
+                4: 'Đơn hàng bị từ chối'
+            };
+            toastr.error(statusNames[currentStatus] || 'Không thể xác nhận đơn hàng này');
+            location.reload(); // Reload để update status
+            return;
+        }
+
+        if (!confirm('Bạn xác nhận đã nhận được hàng?')) return;
+
+        customFetch(`/Order/ConfirmReceivedOrder?orderId=${orderId}`, {
+            method: 'POST'
+        })
+            .then(res => res.json())
+            .then(data => {
+                if (data.success) {
+                    toastr.success(data.message);
+                    setTimeout(() => location.reload(), 1500);
+                } else {
+                    // Nếu server trả về lỗi (status đã thay đổi)
+                    toastr.error(data.message || 'Xác nhận thất bại');
+                    setTimeout(() => location.reload(), 1500);
+                }
+            })
+            .catch(err => {
+                console.error(err);
+                toastr.error('Có lỗi xảy ra khi gửi yêu cầu');
+            });
+    };
+</script>
+
+<style>
+    .toggle-icon {
+        transition: transform 0.3s ease;
+    }
+
+    .toggle-icon.rotate-180 {
+        transform: rotate(180deg);
+    }
+</style>

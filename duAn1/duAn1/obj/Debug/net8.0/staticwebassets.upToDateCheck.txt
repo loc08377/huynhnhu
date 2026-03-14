@@ -2,9 +2,9 @@ wwwroot\css\header_css.css
 wwwroot\css\Home.css
 wwwroot\css\site.css
 wwwroot\favicon.ico
-wwwroot\js\cart.js
-wwwroot\js\Collection.js
 wwwroot\js\home.js
+wwwroot\js\fetch-config.js
+wwwroot\js\Collection.js
 wwwroot\js\register-validate.js
 wwwroot\js\site.js
 wwwroot\lib\bootstrap\dist\css\bootstrap-grid.css
@@ -65,3 +65,7 @@ wwwroot\lib\jquery\dist\jquery.min.js
 wwwroot\lib\jquery\dist\jquery.min.map
 wwwroot\lib\jquery\LICENSE.txt
 wwwroot\logo_br.png
+wwwroot\js\ajax-interceptor.js
+wwwroot\js\cart.js
+wwwroot\lib\db.sql
+wwwroot\js\Order.js
