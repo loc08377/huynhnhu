@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("duAn1")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+7eb30cfc4c1b3529b5ec0b3c7eb2573150d7bb83")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+76c9c7f3717cf9fdba7c4332ce3a608536a6256f")]
 [assembly: System.Reflection.AssemblyProductAttribute("duAn1")]
 [assembly: System.Reflection.AssemblyTitleAttribute("duAn1")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

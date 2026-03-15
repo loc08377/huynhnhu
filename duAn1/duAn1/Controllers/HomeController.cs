@@ -133,6 +133,63 @@ namespace duAn1.Controllers
             return RedirectToAction("Index", "Home");
         }
 
+        // Change Password API Endpoint
+        [HttpPost]
+        [Route("api/change-password")]
+        public IActionResult ChangePassword([FromBody] ChangePasswordRequest request)
+        {
+            try
+            {
+                // Check if user is authenticated
+                int? userId = _authService.GetUserId(HttpContext);
+                if (userId == null)
+                {
+                    return Json(new { success = false, message = "Phiên bản đăng nhập hết hạn!" });
+                }
+
+                // Validate input
+                if (string.IsNullOrWhiteSpace(request.OldPassword) || string.IsNullOrWhiteSpace(request.NewPassword))
+                {
+                    return Json(new { success = false, message = "Vui lòng điền đầy đủ thông tin" });
+                }
+
+                if (request.NewPassword.Length < 6)
+                {
+                    return Json(new { success = false, message = "Mật khẩu mới phải có ít nhất 6 kí tự" });
+                }
+
+                // Get current user
+                var user = _context.Users.FirstOrDefault(u => u.Id == userId);
+                if (user == null)
+                {
+                    return Json(new { success = false, message = "Không tìm thấy người dùng" });
+                }
+
+                // Verify old password
+                bool isPasswordValid = _authService.VerifyPassword(user, request.OldPassword);
+                if (!isPasswordValid)
+                {
+                    return Json(new { success = false, message = "Mật khẩu cũ không chính xác" });
+                }
+
+                // Hash new password
+                user.Password = _authService.HashPassword(user, request.NewPassword);
+
+                // Save to database
+                _context.Users.Update(user);
+                _context.SaveChanges();
+
+                _logger.LogInformation($"User {userId} changed password successfully");
+
+                return Json(new { success = true, message = "Đổi mật khẩu thành công!" });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error changing password");
+                return Json(new { success = false, message = $"Lỗi: {ex.Message}" });
+            }
+        }
+
         // Favorites endpoints
         [HttpGet]
         public IActionResult Favorites()
