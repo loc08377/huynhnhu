@@ -22,12 +22,41 @@
             </svg>
             Sản Phẩm
         </a>
-        <a asp-controller="Admin" asp-action="OrderManager" class="flex items-center gap-3 px-4 py-3 text-slate-600 rounded-xl hover:bg-slate-50 transition-colors">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" />
-            </svg>
-            Đơn Hàng
-        </a>
+
+        <!-- Order Menu with Submenu -->
+        <div class="relative">
+            <button id="orderMenuBtn" class="w-full flex items-center gap-3 px-4 py-3 text-slate-600 rounded-xl hover:bg-slate-50 transition-colors cursor-pointer border-0 bg-transparent text-left">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" />
+                </svg>
+                <span>Đơn Hàng</span>
+                <svg id="orderArrow" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4 ml-auto transition-transform">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
+                </svg>
+            </button>
+
+            <!-- Submenu -->
+            <div id="orderSubmenu" class="hidden space-y-1 py-2 pl-4">
+                <a href="#" class="order-status-link flex items-center gap-3 px-4 py-2 text-slate-600 rounded-lg hover:bg-slate-100 transition-colors text-sm" data-status="">
+                    <span class="inline-block w-2 h-2 bg-slate-400 rounded-full"></span>Tất cả
+                </a>
+                <a href="#" class="order-status-link flex items-center gap-3 px-4 py-2 text-slate-600 rounded-lg hover:bg-slate-100 transition-colors text-sm" data-status="0">
+                    <span class="inline-block w-2 h-2 bg-amber-400 rounded-full"></span>Chờ xác nhận
+                </a>
+                <a href="#" class="order-status-link flex items-center gap-3 px-4 py-2 text-slate-600 rounded-lg hover:bg-slate-100 transition-colors text-sm" data-status="1">
+                    <span class="inline-block w-2 h-2 bg-blue-400 rounded-full"></span>Đang giao
+                </a>
+                <a href="#" class="order-status-link flex items-center gap-3 px-4 py-2 text-slate-600 rounded-lg hover:bg-slate-100 transition-colors text-sm" data-status="2">
+                    <span class="inline-block w-2 h-2 bg-green-400 rounded-full"></span>Đã nhận được
+                </a>
+                <a href="#" class="order-status-link flex items-center gap-3 px-4 py-2 text-slate-600 rounded-lg hover:bg-slate-100 transition-colors text-sm" data-status="3">
+                    <span class="inline-block w-2 h-2 bg-red-400 rounded-full"></span>Đã hủy
+                </a>
+                <a href="#" class="order-status-link flex items-center gap-3 px-4 py-2 text-slate-600 rounded-lg hover:bg-slate-100 transition-colors text-sm" data-status="4">
+                    <span class="inline-block w-2 h-2 bg-gray-400 rounded-full"></span>Từ chối
+                </a>
+            </div>
+        </div>
         <a asp-controller="Admin" asp-action="UserManager" class="flex items-center gap-3 px-4 py-3 text-slate-600 rounded-xl hover:bg-slate-50 transition-colors">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zm8.25 2.25a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z" />
@@ -49,7 +78,6 @@
 </aside>
 
 <script>
-    // Active tab dựa trên URL hiện tại
     document.addEventListener('DOMContentLoaded', () => {
         const currentPath = window.location.pathname.toLowerCase();
         const navLinks = document.querySelectorAll('aside a[asp-controller]');
@@ -61,5 +89,49 @@
                 link.classList.remove('text-slate-600');
             }
         });
+
+        // Order menu toggle
+        const orderMenuBtn = document.getElementById('orderMenuBtn');
+        const orderSubmenu = document.getElementById('orderSubmenu');
+        const orderArrow = document.getElementById('orderArrow');
+
+        orderMenuBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            orderSubmenu.classList.toggle('hidden');
+            orderArrow.classList.toggle('rotate-180');
+        });
+
+        // Status filter links
+        document.querySelectorAll('.order-status-link').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const status = this.dataset.status;
+                
+                // Navigate to OrderManager with status filter
+                if (status === '') {
+                    window.location.href = '/AdminJewel/OrderManager';
+                } else {
+                    window.location.href = `/AdminJewel/OrderManager?status=${status}`;
+                }
+            });
+        });
+
+        // Auto-expand menu if on OrderManager page
+        if (currentPath.includes('ordermanager')) {
+            orderSubmenu.classList.remove('hidden');
+            orderArrow.classList.add('rotate-180');
+
+            // Highlight active status
+            const params = new URLSearchParams(window.location.search);
+            const activeStatus = params.get('status') || '';
+            
+            document.querySelectorAll('.order-status-link').forEach(link => {
+                const status = link.dataset.status;
+                if (status === activeStatus) {
+                    link.classList.add('bg-slate-100', 'text-blue-600', 'font-semibold');
+                    link.classList.remove('text-slate-600');
+                }
+            });
+        }
     });
 </script>

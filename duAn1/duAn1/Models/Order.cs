@@ -13,7 +13,8 @@ namespace duAn1.Models
 
         public bool Status { get; set; }
 
-        public int payment_status { get; set; }
+        [Column("payment_status")]
+        public int? PaymentStatus { get; set; }
         // 0: người dùng mới đặt hàng chờ xác nhận
         // 1: admin đã xác nhận đang giao
         // 2: người dùng đã nhận được hàng

@@ -62,7 +62,7 @@ namespace duAn1.Controllers
                     .Sum(od => od.Price * od.Quantity);
 
                 // Số đơn hàng mới (chờ xác nhận - status = 0)
-                var newOrders = _context.Orders.Count(o => o.payment_status == 0);
+                var newOrders = _context.Orders.Count(o => o.PaymentStatus == 0);
 
                 // Tổng số sản phẩm
                 var totalProducts = _context.Products.Count();
@@ -216,7 +216,7 @@ namespace duAn1.Controllers
         }
 
         [Route("OrderManager")]
-        public IActionResult OrderManager()
+        public IActionResult OrderManager(int? status)
         {
             try
             {
@@ -226,6 +226,12 @@ namespace duAn1.Controllers
                     .Include(o => o.OrderDetails)
                     .OrderByDescending(o => o.CreateDate)
                     .ToList();
+
+                // Filter by status if provided
+                if (status.HasValue)
+                {
+                    allOrders = allOrders.Where(o => o.PaymentStatus == status).ToList();
+                }
 
                 // Create a map of order details for easy access
                 var orderDetailsMap = new Dictionary<int, List<dynamic>>();
@@ -252,6 +258,7 @@ namespace duAn1.Controllers
                 }
 
                 ViewBag.OrderDetailsMap = orderDetailsMap;
+                ViewBag.CurrentStatus = status;
                 return View("~/Views/AdminJewel/Components/OrderManager.cshtml", allOrders);
             }
             catch (Exception ex)
@@ -265,7 +272,115 @@ namespace duAn1.Controllers
         [Route("UserManager")]
         public IActionResult UserManager()
         {
-            return View("~/Views/AdminJewel/Components/UserManager.cshtml");
+            try
+            {
+                var users = _context.Users.OrderByDescending(u => u.Id).ToList();
+                return View("~/Views/AdminJewel/Components/UserManager.cshtml", users);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error loading user manager");
+                TempData["error"] = "Lỗi tải danh sách người dùng: " + ex.Message;
+                return RedirectToAction("Dashboard");
+            }
+        }
+
+        [Route("AddUser")]
+        [HttpPost]
+        public IActionResult AddUser(string fullName, string email, string password)
+        {
+            try
+            {
+                if (string.IsNullOrWhiteSpace(fullName) || string.IsNullOrWhiteSpace(email) || string.IsNullOrWhiteSpace(password))
+                {
+                    return Json(new { success = false, message = "Vui lòng điền đầy đủ thông tin" });
+                }
+
+                // Check if email already exists
+                if (_context.Users.Any(u => u.Email == email.Trim()))
+                {
+                    return Json(new { success = false, message = "Email này đã được sử dụng" });
+                }
+
+                var user = new User
+                {
+                    FullName = fullName.Trim(),
+                    Email = email.Trim(),
+                    Password = password, // In production, hash the password
+                    Role = 0, // Regular customer
+                    Actived = true
+                };
+
+                _context.Users.Add(user);
+                _context.SaveChanges();
+
+                return Json(new { success = true, message = "Thêm người dùng thành công" });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = "Lỗi: " + ex.Message });
+            }
+        }
+
+        [Route("EditUser/{id}")]
+        [HttpPost]
+        public IActionResult EditUser(int id, string fullName, string email)
+        {
+            try
+            {
+                if (string.IsNullOrWhiteSpace(fullName) || string.IsNullOrWhiteSpace(email))
+                {
+                    return Json(new { success = false, message = "Vui lòng điền đầy đủ thông tin" });
+                }
+
+                var user = _context.Users.Find(id);
+                if (user == null)
+                {
+                    return Json(new { success = false, message = "Người dùng không tồn tại" });
+                }
+
+                // Check if email already used by another user
+                if (_context.Users.Any(u => u.Email == email.Trim() && u.Id != id))
+                {
+                    return Json(new { success = false, message = "Email này đã được sử dụng" });
+                }
+
+                user.FullName = fullName.Trim();
+                user.Email = email.Trim();
+
+                _context.SaveChanges();
+
+                return Json(new { success = true, message = "Cập nhật thông tin thành công" });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = "Lỗi: " + ex.Message });
+            }
+        }
+
+        [Route("LockUser/{id}")]
+        [HttpPost]
+        public IActionResult LockUser(int id)
+        {
+            try
+            {
+                var user = _context.Users.Find(id);
+                if (user == null)
+                {
+                    return Json(new { success = false, message = "Người dùng không tồn tại" });
+                }
+
+                // Toggle Actived status
+                user.Actived = !(user.Actived ?? false);
+                _context.SaveChanges();
+
+                var message = (user.Actived ?? false) ? "Mở khóa tài khoản thành công" : "Khóa tài khoản thành công";
+                return Json(new { success = true, message = message, actived = user.Actived });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = "Lỗi: " + ex.Message });
+            }
         }
 
         [Route("UpdateOrderStatus/{orderId}")]
@@ -284,7 +399,7 @@ namespace duAn1.Controllers
 
                 // Kiểm tra status hiện tại trước khi cập nhật
                 // Chỉ cho phép xác nhận hoặc từ chối nếu status = 0
-                if (order.payment_status != 0)
+                if (order.PaymentStatus != 0)
                 {
                     if (newStatus == 1 || newStatus == 4) // Xác nhận hoặc từ chối
                     {
@@ -295,32 +410,32 @@ namespace duAn1.Controllers
                 // Kiểm tra chuyển đổi trạng thái hợp lệ
                 // 0 -> 1 (xác nhận)
                 // 0 -> 4 (từ chối)
-                if (order.payment_status == 0)
+                if (order.PaymentStatus == 0)
                 {
                     if (newStatus != 1 && newStatus != 4)
                     {
                         return Json(new { success = false, message = "Trạng thái chuyển đổi không hợp lệ" });
                     }
                 }
-                else if (order.payment_status == 1)
+                else if (order.PaymentStatus == 1)
                 {
                     // Status 1 (đang giao) - không được phép cập nhật từ admin side
                     return Json(new { success = false, message = "Đơn hàng đang giao. Không thể cập nhật" });
                 }
-                else if (order.payment_status == 2)
+                else if (order.PaymentStatus == 2)
                 {
                     return Json(new { success = false, message = "Đơn hàng đã hoàn thành" });
                 }
-                else if (order.payment_status == 3)
+                else if (order.PaymentStatus == 3)
                 {
                     return Json(new { success = false, message = "Đơn hàng đã bị hủy bởi client" });
                 }
-                else if (order.payment_status == 4)
+                else if (order.PaymentStatus == 4)
                 {
                     return Json(new { success = false, message = "Đơn hàng đã bị từ chối" });
                 }
 
-                order.payment_status = newStatus;
+                order.PaymentStatus = newStatus;
                 _context.SaveChanges();
 
                 var successMsg = newStatus == 1 ? "Xác nhận đơn hàng thành công" : "Từ chối đơn hàng thành công";

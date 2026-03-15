@@ -102,8 +102,8 @@ namespace duAn1.Controllers
                     id = order.Id,
                     address = order.Address,
                     createDate = order.CreateDate.ToString("dd/MM/yyyy HH:mm"),
-                    status = order.payment_status,
-                    statusText = GetStatusText(order.payment_status)
+                    status = order.PaymentStatus,
+                    statusText = GetStatusText(order.PaymentStatus ?? 0)
                 },
                 details = orderDetails.Select(od => new
                 {
@@ -137,26 +137,26 @@ namespace duAn1.Controllers
             }
 
             // Kiểm tra trạng thái đơn hàng - chỉ có thể hủy nếu status = 0
-            if (order.payment_status == 0)
+            if (order.PaymentStatus == 0)
             {
                 // Chuyển status sang 3 (Đã hủy)
-                order.payment_status = 3;
+                order.PaymentStatus = 3;
                 _context.SaveChanges();
                 return Json(new { success = true, message = "Hủy đơn hàng thành công" });
             }
-            else if (order.payment_status == 1)
+            else if (order.PaymentStatus == 1)
             {
                 return Json(new { success = false, message = "Đơn hàng đã được xác nhận bởi admin và đang giao. Không thể hủy" });
             }
-            else if (order.payment_status == 2)
+            else if (order.PaymentStatus == 2)
             {
                 return Json(new { success = false, message = "Đơn hàng đã hoàn thành. Không thể hủy" });
             }
-            else if (order.payment_status == 3)
+            else if (order.PaymentStatus == 3)
             {
                 return Json(new { success = false, message = "Đơn hàng đã được hủy trước đó" });
             }
-            else if (order.payment_status == 4)
+            else if (order.PaymentStatus == 4)
             {
                 return Json(new { success = false, message = "Đơn hàng bị từ chối bởi admin. Không thể hủy" });
             }
@@ -184,26 +184,26 @@ namespace duAn1.Controllers
             }
 
             // Kiểm tra trạng thái đơn hàng - chỉ có thể xác nhận nếu status = 1
-            if (order.payment_status == 1)
+            if (order.PaymentStatus == 1)
             {
                 // Chuyển status sang 2 (Đã nhận)
-                order.payment_status = 2;
+                order.PaymentStatus = 2;
                 _context.SaveChanges();
                 return Json(new { success = true, message = "Xác nhận nhận hàng thành công" });
             }
-            else if (order.payment_status == 0)
+            else if (order.PaymentStatus == 0)
             {
                 return Json(new { success = false, message = "Đơn hàng chưa được xác nhận bởi admin. Vui lòng chờ" });
             }
-            else if (order.payment_status == 2)
+            else if (order.PaymentStatus == 2)
             {
                 return Json(new { success = false, message = "Đơn hàng đã được xác nhận nhận hàng trước đó" });
             }
-            else if (order.payment_status == 3)
+            else if (order.PaymentStatus == 3)
             {
                 return Json(new { success = false, message = "Đơn hàng đã bị hủy. Không thể xác nhận" });
             }
-            else if (order.payment_status == 4)
+            else if (order.PaymentStatus == 4)
             {
                 return Json(new { success = false, message = "Đơn hàng bị từ chối bởi admin. Không thể xác nhận" });
             }

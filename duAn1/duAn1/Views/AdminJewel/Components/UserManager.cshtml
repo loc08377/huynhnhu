@@ -1,110 +1,262 @@
-﻿<div class="space-y-6 animate-fade-in">
+﻿@model List<User>
 
-<h1 class="text-3xl font-bold text-slate-800 font-serif">
-Quản Lý Người Dùng
-</h1>
+<div class="space-y-6 animate-fade-in">
+    <div class="flex justify-between items-center">
+        <h1 class="text-3xl font-bold text-slate-800 font-serif">Quản Lý Người Dùng</h1>
 
-<div class="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden">
+        <button id="toggleFormBtn" type="button" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-bold shadow-md transition-colors flex items-center gap-2">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+            </svg>
+            <span id="toggleText">Thêm Người Dùng</span>
+        </button>
+    </div>
 
-<table class="w-full text-left border-collapse">
+    <!-- Add/Edit User Form -->
+    <div id="userForm" class="bg-white p-6 rounded-2xl shadow-md border border-slate-100 mb-6 hidden">
+        <h3 id="formTitle" class="font-bold text-lg mb-4 text-slate-700">Thêm Người Dùng Mới</h3>
 
-<thead class="bg-slate-50 text-slate-500 text-sm font-bold uppercase">
-<tr>
-<th class="p-4">ID</th>
-<th class="p-4">Họ Tên</th>
-<th class="p-4">Email</th>
-<th class="p-4">Vai Trò</th>
-<th class="p-4">Ngày Tham Gia</th>
-<th class="p-4 text-center">Thao Tác</th>
-</tr>
-</thead>
+        <form id="userFormElement" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <input type="hidden" id="userId" />
 
-<tbody class="divide-y divide-slate-100">
+            <input id="fullName" type="text" placeholder="Họ và Tên" class="border p-2 rounded-lg outline-none focus:border-blue-500" required />
 
-<tr class="hover:bg-slate-50 transition-colors" id="user-1">
+            <input id="email" type="email" placeholder="Email" class="border p-2 rounded-lg outline-none focus:border-blue-500" required />
 
-<td class="p-4 text-slate-500">#1</td>
-<td class="p-4 font-medium">Nguyễn Văn A</td>
-<td class="p-4 text-slate-600">vana@gmail.com</td>
+            <div id="passwordField" class="md:col-span-2">
+                <input id="password" type="password" placeholder="Mật khẩu" class="border p-2 rounded-lg outline-none focus:border-blue-500 w-full" required />
+            </div>
 
-<td class="p-4">
-<span class="px-2 py-1 rounded-full text-xs font-bold bg-slate-100 text-slate-700">
-USER
-</span>
-</td>
+            <div class="md:col-span-2 flex gap-2">
+                <button id="saveBtnUser" type="button" class="bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded-lg font-bold">Lưu</button>
+                <button id="cancelBtnUser" type="button" class="bg-gray-400 hover:bg-gray-500 text-white px-6 py-2 rounded-lg font-bold">Hủy</button>
+            </div>
+        </form>
+    </div>
 
-<td class="p-4 text-slate-500">
-10/03/2026
-</td>
+    <!-- Users Table -->
+    <div class="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden">
+        <table class="w-full text-left border-collapse">
+            <thead class="bg-slate-50 text-slate-500 text-sm font-bold uppercase">
+                <tr>
+                    <th class="p-4">ID</th>
+                    <th class="p-4">Họ Tên</th>
+                    <th class="p-4">Email</th>
+                    <th class="p-4">Vai Trò</th>
+                    <th class="p-4">Trạng Thái</th>
+                    <th class="p-4 text-center">Hành Động</th>
+                </tr>
+            </thead>
 
-<td class="p-4 text-center">
+            <tbody class="divide-y divide-slate-100" id="userTableBody">
+                @if (Model != null && Model.Count > 0)
+                {
+                    @foreach (var user in Model)
+                    {
+                        var roleText = user.Role == 1 ? "Admin" : "Khách hàng";
+                        var statusBadge = user.Actived == true ? "bg-green-100 text-green-700" : "bg-red-100 text-red-700";
+                        var statusText = user.Actived == true ? "Hoạt động" : "Đã khóa";
 
-<button onclick="confirmDelete(1,'Nguyễn Văn A')"
-class="text-red-400 hover:text-red-600 transition-colors"
-title="Xóa người dùng">
+                        <tr class="hover:bg-slate-50 transition-colors">
+                            <td class="p-4 text-slate-500 font-medium">#@user.Id</td>
+                            <td class="p-4 font-medium text-slate-800">@user.FullName</td>
+                            <td class="p-4 text-slate-600">@user.Email</td>
+                            <td class="p-4">
+                                <span class="px-2 py-1 rounded-full text-xs font-bold @(user.Role == 1 ? "bg-purple-100 text-purple-700" : "bg-slate-100 text-slate-700")">
+                                    @roleText
+                                </span>
+                            </td>
+                            <td class="p-4">
+                                <span class="px-2 py-1 rounded-full text-xs font-bold @statusBadge">@statusText</span>
+                            </td>
+                            <td class="p-4 text-center">
+                                <div class="flex gap-2 justify-center">
+                                    @if (user.Role != 1) 
+                                    {
+                                        <button type="button" class="editBtn text-blue-400 hover:text-blue-600 transition-colors p-2" data-id="@user.Id" data-fullname="@user.FullName" data-email="@user.Email">
+                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+                                                <path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 9l-4.663-4.663" />
+                                            </svg>
+                                        </button>
 
-🗑
+                                        <button type="button" class="lockBtn text-amber-400 hover:text-amber-600 transition-colors p-2" data-id="@user.Id" data-actived="@(user.Actived == true ? "true" : "false")">
+                                            @if (user.Actived == true)
+                                            {
+                                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 10.5V6.75a4.5 4.5 0 119 0v3.75M9 15H3m6 0a6 6 0 100 12 6 6 0 000-12z" />
+                                                </svg>
+                                            }
+                                            else
+                                            {
+                                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z" />
+                                                </svg>
+                                            }
+                                        </button>
+                                    }
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
 
-</button>
-
-</td>
-
-</tr>
-
-
-<tr class="hover:bg-slate-50 transition-colors">
-
-<td class="p-4 text-slate-500">#2</td>
-<td class="p-4 font-medium">Admin System</td>
-<td class="p-4 text-slate-600">admin@gmail.com</td>
-
-<td class="p-4">
-<span class="px-2 py-1 rounded-full text-xs font-bold bg-purple-100 text-purple-700">
-ADMIN
-</span>
-</td>
-
-<td class="p-4 text-slate-500">
-01/01/2026
-</td>
-
-<td class="p-4 text-center">
-<!-- admin không có nút xoá -->
-</td>
-
-</tr>
-
-</tbody>
-
-</table>
-
+        @if (Model == null || Model.Count == 0)
+        {
+            <div class="p-8 text-center">
+                <p class="text-slate-500">Chưa có người dùng nào</p>
+            </div>
+        }
+    </div>
 </div>
-
-</div>
-
 
 <script>
+const btn = document.getElementById("toggleFormBtn");
+const form = document.getElementById("userForm");
+const text = document.getElementById("toggleText");
+const formTitle = document.getElementById("formTitle");
+const userForm = document.getElementById("userFormElement");
+const saveBtn = document.getElementById("saveBtnUser");
+const cancelBtn = document.getElementById("cancelBtnUser");
+const userIdInput = document.getElementById("userId");
+const passwordField = document.getElementById("passwordField");
 
-function confirmDelete(userId,userName){
+let show = false;
+let isEditMode = false;
 
-let confirmDeleteUser = confirm(
-"Xóa Người Dùng?\n\n"+
-"Bạn có chắc chắn muốn xóa người dùng '"+userName+"' ?\n"+
-"Dữ liệu lịch sử đơn hàng của họ cũng sẽ bị ẩn."
-);
+btn.onclick = function () {
+    show = !show;
+    if (show) {
+        form.classList.remove("hidden");
+        text.innerText = "Hủy";
+        isEditMode = false;
+        userIdInput.value = "";
+        formTitle.innerText = "Thêm Người Dùng Mới";
+        saveBtn.innerText = "Thêm";
+        passwordField.style.display = "block";
+        userForm.reset();
+    } else {
+        form.classList.add("hidden");
+        text.innerText = "Thêm Người Dùng";
+        userForm.reset();
+    }
+};
 
-if(confirmDeleteUser){
+cancelBtn.onclick = function() {
+    show = false;
+    form.classList.add("hidden");
+    text.innerText = "Thêm Người Dùng";
+    isEditMode = false;
+    userIdInput.value = "";
+    userForm.reset();
+};
 
-let row = document.getElementById("user-"+userId);
+// Edit button handler
+document.querySelectorAll(".editBtn").forEach(btn => {
+    btn.onclick = function(e) {
+        e.preventDefault();
+        const userId = this.dataset.id;
+        const fullName = this.dataset.fullname;
+        const email = this.dataset.email;
 
-if(row){
-row.remove();
-}
+        document.getElementById("fullName").value = fullName;
+        document.getElementById("email").value = email;
+        userIdInput.value = userId;
 
-alert("Đã xóa người dùng thành công");
+        isEditMode = true;
+        formTitle.innerText = "Chỉnh Sửa Thông Tin";
+        saveBtn.innerText = "Cập Nhật";
+        passwordField.style.display = "none";
 
-}
+        form.classList.remove("hidden");
+        form.scrollIntoView({ behavior: "smooth" });
+    };
+});
 
-}
+saveBtn.onclick = async function() {
+    const fullName = document.getElementById("fullName").value.trim();
+    const email = document.getElementById("email").value.trim();
+    const password = document.getElementById("password").value.trim();
 
+    if (!fullName) {
+        toastr.error("Vui lòng nhập họ và tên");
+        return;
+    }
+    if (!email) {
+        toastr.error("Vui lòng nhập email");
+        return;
+    }
+    if (!isEditMode && !password) {
+        toastr.error("Vui lòng nhập mật khẩu");
+        return;
+    }
+
+    const endpoint = isEditMode ? `/AdminJewel/EditUser/${userIdInput.value}` : "/AdminJewel/AddUser";
+    
+    const params = new URLSearchParams();
+    params.append("fullName", fullName);
+    params.append("email", email);
+    if (!isEditMode) {
+        params.append("password", password);
+    }
+
+    try {
+        const response = await fetch(endpoint, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded"
+            },
+            body: params.toString()
+        });
+        const data = await response.json();
+        
+        if (data.success) {
+            toastr.success(data.message);
+            userForm.reset();
+            show = false;
+            form.classList.add("hidden");
+            text.innerText = "Thêm Người Dùng";
+            isEditMode = false;
+            userIdInput.value = "";
+            setTimeout(() => {
+                location.reload();
+            }, 1500);
+        } else {
+            toastr.error(data.message);
+        }
+    } catch (error) {
+        toastr.error("Lỗi: " + error.message);
+    }
+};
+
+// Lock/Unlock button handler
+document.querySelectorAll(".lockBtn").forEach(btn => {
+    btn.onclick = async function(e) {
+        e.preventDefault();
+        const userId = this.dataset.id;
+        const currentStatus = this.dataset.actived === "true";
+        const action = currentStatus ? "khóa" : "mở khóa";
+        
+        if (!confirm(`Bạn có chắc chắn muốn ${action} tài khoản này không?`)) return;
+
+        try {
+            const response = await fetch(`/AdminJewel/LockUser/${userId}`, {
+                method: "POST"
+            });
+            const data = await response.json();
+            
+            if (data.success) {
+                toastr.success(data.message);
+                setTimeout(() => {
+                    location.reload();
+                }, 1500);
+            } else {
+                toastr.error(data.message);
+            }
+        } catch (error) {
+            toastr.error("Lỗi: " + error.message);
+        }
+    };
+});
 </script>

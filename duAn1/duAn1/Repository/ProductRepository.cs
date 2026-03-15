@@ -17,6 +17,7 @@ namespace duAn1.Repository
             List<Product> productList = new List<Product>();
             productList = _context.Products
                 .Include(p => p.Category)
+                .Where(p => (p.Actived ?? true))
                 .ToList();
             return productList;
 
@@ -26,7 +27,7 @@ namespace duAn1.Repository
             List<Product> listProductByCategory = new List<Product>();
             listProductByCategory = _context.Products
                 .Include(p => p.Category)
-                .Where(p => p.CategoryId == idCategory)
+                .Where(p => p.CategoryId == idCategory && (p.Actived ?? true))
                 .ToList();
             return listProductByCategory;
         }

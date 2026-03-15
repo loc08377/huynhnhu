@@ -34,6 +34,11 @@ builder.Services.AddScoped<CategoryLINQ>();
 builder.Services.AddScoped<CartLINQ>();
 builder.Services.AddScoped<CartService>();
 
+builder.Services.AddScoped<AIRecommendationService>();
+builder.Services.AddScoped<GeminiAIService>();
+
+builder.Services.AddScoped<FavoriteService>();
+
 builder.Services.AddScoped<IAuthService, AuthService>();
 
 // ==========================
@@ -49,7 +54,7 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
 
         options.Cookie.Name = "duAn1Auth";
 
-           options.ExpireTimeSpan = TimeSpan.FromMinutes(1); // Cookie chỉ sống trong bao lau 
+           options.ExpireTimeSpan = TimeSpan.FromMinutes(100); // Cookie chỉ sống trong bao lau 
     });
 
 builder.Services.AddAuthorization();

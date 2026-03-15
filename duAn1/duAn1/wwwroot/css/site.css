@@ -20,3 +20,17 @@ html {
 body {
   margin-bottom: 60px;
 }
+
+/* Favorite Button Styles */
+.favorite-btn {
+  transition: all 0.3s ease;
+}
+
+.favorite-btn.favorite-active {
+  background-color: rgba(236, 72, 153, 0.3) !important;
+  color: rgb(236, 72, 153) !important;
+}
+
+.favorite-btn.favorite-active:hover {
+  background-color: rgba(236, 72, 153, 0.4) !important;
+}

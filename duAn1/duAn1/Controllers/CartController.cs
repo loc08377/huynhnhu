@@ -50,6 +50,15 @@ namespace duAn1.Controllers
         {
             try
             {
+                if (productId <= 0 || quantity <= 0)
+                {
+                    return Json(new
+                    {
+                        status = false,
+                        message = "Sản phẩm hoặc số lượng không hợp lệ"
+                    });
+                }
+
                 int? userId = _authService.GetUserId(HttpContext);
 
                 if (userId == null)
@@ -59,6 +68,17 @@ namespace duAn1.Controllers
                         status = false,
                         message = "Vui lòng đăng nhập",
                         redirect = "/Login"
+                    });
+                }
+
+                // Check if product exists and is active
+                var product = _context.Products.FirstOrDefault(p => p.Id == productId);
+                if (product == null || !(product.Actived ?? true))
+                {
+                    return Json(new
+                    {
+                        status = false,
+                        message = "Sản phẩm không còn khả dụng hoặc đã bị xóa"
                     });
                 }
 
@@ -214,7 +234,7 @@ namespace duAn1.Controllers
                     Address = address,
                     CreateDate = DateTime.Now,
                     Status = false,
-                    payment_status = 0  // 0 = Chờ xác nhận
+                    PaymentStatus = 0  // 0 = Chờ xác nhận
                 };
 
                 _context.Orders.Add(order);

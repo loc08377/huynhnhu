@@ -15,6 +15,7 @@ namespace duAn1.Controllers
         private readonly CategoryService _categoryService;
         private readonly IAuthService _authService;
         private readonly AppDbContext _context;
+        private readonly FavoriteService _favoriteService;
 
         public HomeController(
             ILogger<HomeController> logger,
@@ -22,7 +23,8 @@ namespace duAn1.Controllers
             IAuthService authService,
             ProductService productService,
             CategoryService categoryService,
-            AppDbContext context
+            AppDbContext context,
+            FavoriteService favoriteService
         )
         {
             _logger = logger;
@@ -31,6 +33,7 @@ namespace duAn1.Controllers
             _productService = productService;
             _categoryService = categoryService;
             _context = context;
+            _favoriteService = favoriteService;
         }
 
         public IActionResult Index(string error)
@@ -58,7 +61,7 @@ namespace duAn1.Controllers
                 return View("~/Views/Login/Register.cshtml", user);
             }
 
-            var existUser = _userService.userByEmail(user.Email);
+            var existUser = _userService.userByEmail(user.Email ?? "");
 
             if (existUser != null)
             {
@@ -67,7 +70,7 @@ namespace duAn1.Controllers
             }
 
             // Hash password
-            user.Password = _authService.HashPassword(user, user.Password);
+            user.Password = _authService.HashPassword(user, user.Password ?? "");
 
             _context.Users.Add(user);
             _context.SaveChanges();
@@ -128,6 +131,123 @@ namespace duAn1.Controllers
             await HttpContext.SignOutAsync();
             Response.Cookies.Delete("duAn1Auth");
             return RedirectToAction("Index", "Home");
+        }
+
+        // Favorites endpoints
+        [HttpGet]
+        public IActionResult Favorites()
+        {
+            int? userId = _authService.GetUserId(HttpContext);
+
+            if (userId == null)
+            {
+                TempData["warning"] = "Phiên bản đăng nhập hết hạn!";
+                return RedirectToAction("Login", "Home");
+            }
+
+            var favorites = _favoriteService.GetFavoritesByUserId(userId.Value);
+            return View("~/Views/Home/Favorites.cshtml", favorites);
+        }
+
+        [HttpPost]
+        public IActionResult ToggleFavorite(int productId)
+        {
+            try
+            {
+                if (productId <= 0)
+                {
+                    return Json(new
+                    {
+                        status = false,
+                        message = "Sản phẩm không hợp lệ"
+                    });
+                }
+
+                int? userId = _authService.GetUserId(HttpContext);
+
+                if (userId == null)
+                {
+                    return Json(new
+                    {
+                        status = false,
+                        message = "Vui lòng đăng nhập",
+                        redirect = "/Login"
+                    });
+                }
+
+                var (success, isFavorited) = _favoriteService.ToggleFavorite(userId.Value, productId);
+
+                if (!success)
+                {
+                    return Json(new
+                    {
+                        status = false,
+                        message = "Lỗi khi cập nhật yêu thích"
+                    });
+                }
+
+                return Json(new
+                {
+                    status = true,
+                    isFavorited = isFavorited,
+                    message = isFavorited ? "Đã thêm vào yêu thích" : "Đã xóa khỏi yêu thích"
+                });
+            }
+            catch (Exception ex)
+            {
+                return Json(new
+                {
+                    status = false,
+                    message = "Lỗi: " + ex.Message
+                });
+            }
+        }
+
+        [HttpGet]
+        public IActionResult IsFavorited(int productId)
+        {
+            try
+            {
+                if (productId <= 0)
+                {
+                    return Json(new { isFavorited = false });
+                }
+
+                int? userId = _authService.GetUserId(HttpContext);
+
+                if (userId == null)
+                {
+                    return Json(new { isFavorited = false });
+                }
+
+                bool isFavorited = _favoriteService.IsFavorited(userId.Value, productId);
+                return Json(new { isFavorited });
+            }
+            catch
+            {
+                return Json(new { isFavorited = false });
+            }
+        }
+
+        [HttpGet]
+        public IActionResult FavoriteCount()
+        {
+            try
+            {
+                int? userId = _authService.GetUserId(HttpContext);
+
+                if (userId == null)
+                {
+                    return Json(new { count = 0 });
+                }
+
+                int count = _favoriteService.GetFavoriteCount(userId.Value);
+                return Json(new { count });
+            }
+            catch
+            {
+                return Json(new { count = 0 });
+            }
         }
     }
 }

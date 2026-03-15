@@ -5,7 +5,7 @@ public class Product
 {
     public int Id { get; set; }
 
-    public bool Actived { get; set; }
+    public bool? Actived { get; set; }
 
     [Column("created_date")]
     public DateTime? CreatedDate { get; set; }
