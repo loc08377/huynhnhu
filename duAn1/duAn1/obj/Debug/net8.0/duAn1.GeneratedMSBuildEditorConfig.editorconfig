@@ -1,7 +1,5 @@
 is_global = true
 build_property.TargetFramework = net8.0
-build_property.TargetFrameworkIdentifier = .NETCoreApp
-build_property.TargetFrameworkVersion = v8.0
 build_property.TargetPlatformMinVersion = 
 build_property.UsingMicrosoftNETSdkWeb = true
 build_property.ProjectTypeGuids = 
@@ -11,109 +9,109 @@ build_property.EnforceExtendedAnalyzerRules =
 build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property.RootNamespace = duAn1
 build_property.RootNamespace = duAn1
-build_property.ProjectDir = D:\Pictures\huynhNhu\duAn1\duAn1\
+build_property.ProjectDir = D:\web\huynhnhu\duAn1\duAn1\
 build_property.EnableComHosting = 
 build_property.EnableGeneratedComInterfaceComImportInterop = 
 build_property.RazorLangVersion = 8.0
 build_property.SupportLocalizedComponentNames = 
 build_property.GenerateRazorMetadataSourceChecksumAttributes = 
-build_property.MSBuildProjectDirectory = D:\Pictures\huynhNhu\duAn1\duAn1
+build_property.MSBuildProjectDirectory = D:\web\huynhnhu\duAn1\duAn1
 build_property._RazorSourceGeneratorDebug = 
 build_property.EffectiveAnalysisLevelStyle = 8.0
 build_property.EnableCodeStyleSeverity = 
 
-[D:/Pictures/huynhNhu/duAn1/duAn1/Views/AdminJewel/Components/DashBoard.cshtml]
+[D:/web/huynhnhu/duAn1/duAn1/Views/AdminJewel/Components/DashBoard.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5KZXdlbFxDb21wb25lbnRzXERhc2hCb2FyZC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Pictures/huynhNhu/duAn1/duAn1/Views/AdminJewel/Components/OrderManager.cshtml]
+[D:/web/huynhnhu/duAn1/duAn1/Views/AdminJewel/Components/OrderManager.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5KZXdlbFxDb21wb25lbnRzXE9yZGVyTWFuYWdlci5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Pictures/huynhNhu/duAn1/duAn1/Views/AdminJewel/Components/ProductManager.cshtml]
+[D:/web/huynhnhu/duAn1/duAn1/Views/AdminJewel/Components/ProductManager.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5KZXdlbFxDb21wb25lbnRzXFByb2R1Y3RNYW5hZ2VyLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Pictures/huynhNhu/duAn1/duAn1/Views/AdminJewel/Components/UserManager.cshtml]
+[D:/web/huynhnhu/duAn1/duAn1/Views/AdminJewel/Components/UserManager.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5KZXdlbFxDb21wb25lbnRzXFVzZXJNYW5hZ2VyLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Pictures/huynhNhu/duAn1/duAn1/Views/AdminJewel/Home/Index.cshtml]
+[D:/web/huynhnhu/duAn1/duAn1/Views/AdminJewel/Home/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5KZXdlbFxIb21lXEluZGV4LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Pictures/huynhNhu/duAn1/duAn1/Views/Cart/CartIndex.cshtml]
+[D:/web/huynhnhu/duAn1/duAn1/Views/Cart/CartIndex.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2FydFxDYXJ0SW5kZXguY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Pictures/huynhNhu/duAn1/duAn1/Views/CollectionProduct/CollectionIndex.cshtml]
+[D:/web/huynhnhu/duAn1/duAn1/Views/CollectionProduct/CollectionIndex.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ29sbGVjdGlvblByb2R1Y3RcQ29sbGVjdGlvbkluZGV4LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Pictures/huynhNhu/duAn1/duAn1/Views/CollectionProduct/CollectionList.cshtml]
+[D:/web/huynhnhu/duAn1/duAn1/Views/CollectionProduct/CollectionList.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ29sbGVjdGlvblByb2R1Y3RcQ29sbGVjdGlvbkxpc3QuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Pictures/huynhNhu/duAn1/duAn1/Views/CollectionProduct/ProductDetail.cshtml]
+[D:/web/huynhnhu/duAn1/duAn1/Views/CollectionProduct/ProductDetail.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ29sbGVjdGlvblByb2R1Y3RcUHJvZHVjdERldGFpbC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Pictures/huynhNhu/duAn1/duAn1/Views/Home/Favorites.cshtml]
+[D:/web/huynhnhu/duAn1/duAn1/Views/Home/Favorites.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxGYXZvcml0ZXMuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Pictures/huynhNhu/duAn1/duAn1/Views/Home/Index.cshtml]
+[D:/web/huynhnhu/duAn1/duAn1/Views/Home/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Pictures/huynhNhu/duAn1/duAn1/Views/Login/Index.cshtml]
+[D:/web/huynhnhu/duAn1/duAn1/Views/Login/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTG9naW5cSW5kZXguY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Pictures/huynhNhu/duAn1/duAn1/Views/Login/Register.cshtml]
+[D:/web/huynhnhu/duAn1/duAn1/Views/Login/Register.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTG9naW5cUmVnaXN0ZXIuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Pictures/huynhNhu/duAn1/duAn1/Views/Order/OrderIndex.cshtml]
+[D:/web/huynhnhu/duAn1/duAn1/Views/Order/OrderIndex.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcT3JkZXJcT3JkZXJJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Pictures/huynhNhu/duAn1/duAn1/Views/Shared/Error.cshtml]
+[D:/web/huynhnhu/duAn1/duAn1/Views/Shared/Error.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXEVycm9yLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Pictures/huynhNhu/duAn1/duAn1/Views/Shared/_Footer.cshtml]
+[D:/web/huynhnhu/duAn1/duAn1/Views/Shared/_Footer.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9Gb290ZXIuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Pictures/huynhNhu/duAn1/duAn1/Views/Shared/_Header.cshtml]
+[D:/web/huynhnhu/duAn1/duAn1/Views/Shared/_Header.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9IZWFkZXIuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Pictures/huynhNhu/duAn1/duAn1/Views/Shared/_LayoutAdmin.cshtml]
+[D:/web/huynhnhu/duAn1/duAn1/Views/Shared/_LayoutAdmin.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9MYXlvdXRBZG1pbi5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Pictures/huynhNhu/duAn1/duAn1/Views/Shared/_SiderBarAdmin.cshtml]
+[D:/web/huynhnhu/duAn1/duAn1/Views/Shared/_SiderBarAdmin.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9TaWRlckJhckFkbWluLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Pictures/huynhNhu/duAn1/duAn1/Views/Shared/_ValidationScriptsPartial.cshtml]
+[D:/web/huynhnhu/duAn1/duAn1/Views/Shared/_ValidationScriptsPartial.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9WYWxpZGF0aW9uU2NyaXB0c1BhcnRpYWwuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Pictures/huynhNhu/duAn1/duAn1/Views/Stylist/Index.cshtml]
+[D:/web/huynhnhu/duAn1/duAn1/Views/Stylist/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU3R5bGlzdFxJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Pictures/huynhNhu/duAn1/duAn1/Views/_ViewImports.cshtml]
+[D:/web/huynhnhu/duAn1/duAn1/Views/_ViewImports.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdJbXBvcnRzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Pictures/huynhNhu/duAn1/duAn1/Views/_ViewStart.cshtml]
+[D:/web/huynhnhu/duAn1/duAn1/Views/_ViewStart.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdTdGFydC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Pictures/huynhNhu/duAn1/duAn1/Views/Shared/_Layout.cshtml]
+[D:/web/huynhnhu/duAn1/duAn1/Views/Shared/_Layout.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9MYXlvdXQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = b-5hbncnfijs

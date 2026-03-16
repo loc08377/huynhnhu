@@ -54,7 +54,7 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
 
         options.Cookie.Name = "duAn1Auth";
 
-           options.ExpireTimeSpan = TimeSpan.FromMinutes(100); // Cookie chỉ sống trong bao lau 
+           options.ExpireTimeSpan = TimeSpan.FromMinutes(10); // Cookie chỉ sống trong bao lau 
     });
 
 builder.Services.AddAuthorization();
