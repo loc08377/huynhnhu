@@ -46,11 +46,11 @@ namespace duAn1.Controllers
 
                 // Validate message length (100-150 characters)
                 var messageLength = request.UserMessage.Trim().Length;
-                if (messageLength < 100)
+                if (messageLength < 1)
                 {
                     return Json(new { 
                         success = false, 
-                        message = $"Tin nhắn quá ngắn! Vui lòng nhập ít nhất 100 kí tự (hiện tại: {messageLength}/100)" 
+                        message = $"Đoạn chat quá ngắn" 
                     });
                 }
 

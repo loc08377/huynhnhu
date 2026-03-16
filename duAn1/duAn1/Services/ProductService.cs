@@ -46,5 +46,29 @@ namespace duAn1.Services
                 return null;
             }
         }
+
+        public List<Product> GetNewestProducts(int count = 10)
+        {
+            try
+            {
+                return _productRepository.getNewestProducts(count);
+            }
+            catch (Exception)
+            {
+                return new List<Product>();
+            }
+        }
+
+        public List<Product> GetBestSellingProducts(int count = 30)
+        {
+            try
+            {
+                return _productRepository.getBestSellingProducts(count);
+            }
+            catch (Exception)
+            {
+                return new List<Product>();
+            }
+        }
     }
 }

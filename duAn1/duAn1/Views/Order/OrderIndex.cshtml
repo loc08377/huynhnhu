@@ -83,12 +83,13 @@
                             {
                                 @foreach (var detail in orderDetailsList)
                                 {
+                                    var img404 = "https://png.pngtree.com/thumb_back/fw800/background/20220119/pngtree-404-error-and-page-not-found-image_983763.jpg";
                                     <div class="flex gap-3 pb-3 border-b border-slate-100 last:border-b-0">
                                         <div class="w-16 h-16 bg-slate-100 rounded-lg overflow-hidden flex-shrink-0">
                                             <img src="@detail.ProductImage" 
                                                  alt="@detail.ProductName" 
                                                  class="w-full h-full object-cover" 
-                                                 onerror="this.src='/images/no-image.jpg'" />
+                                                 onerror="this.src='@img404'" />
                                         </div>
                                         <div class="flex-grow">
                                             <p class="font-semibold text-slate-700 line-clamp-1">@detail.ProductName</p>

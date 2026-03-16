@@ -39,7 +39,12 @@ namespace duAn1.Controllers
         public IActionResult Index(string error)
         {
             Message.HandleError(TempData, error);
-            return View(_productService.GetProducts());
+            var viewModel = new HomeViewModel
+            {
+                NewestProducts = _productService.GetNewestProducts(10),
+                BestSellingProducts = _productService.GetBestSellingProducts(30)
+            };
+            return View(viewModel);
         }
 
         public IActionResult Login()

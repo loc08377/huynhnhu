@@ -3,6 +3,10 @@
   "WorkspaceRootPath": "D:\\Pictures\\huynhNhu\\duAn1\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{D1FFF98E-85ED-4172-AD83-32302F8AE7AB}|duAn1\\duAn1.csproj|d:\\pictures\\huynhnhu\\duan1\\duan1\\views\\adminjewel\\components\\ordermanager.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{D1FFF98E-85ED-4172-AD83-32302F8AE7AB}|duAn1\\duAn1.csproj|solutionrelative:duan1\\views\\adminjewel\\components\\ordermanager.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{D1FFF98E-85ED-4172-AD83-32302F8AE7AB}|duAn1\\duAn1.csproj|d:\\pictures\\huynhnhu\\duan1\\duan1\\controllers\\stylistcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{D1FFF98E-85ED-4172-AD83-32302F8AE7AB}|duAn1\\duAn1.csproj|solutionrelative:duan1\\controllers\\stylistcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
@@ -94,7 +98,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 651,
-          "SelectedChildIndex": 7,
+          "SelectedChildIndex": 3,
           "Children": [
             {
               "$type": "Bookmark",
@@ -110,7 +114,20 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 0,
+              "Title": "OrderManager.cshtml",
+              "DocumentMoniker": "D:\\Pictures\\huynhNhu\\duAn1\\duAn1\\Views\\AdminJewel\\Components\\OrderManager.cshtml",
+              "RelativeDocumentMoniker": "duAn1\\Views\\AdminJewel\\Components\\OrderManager.cshtml",
+              "ToolTip": "D:\\Pictures\\huynhNhu\\duAn1\\duAn1\\Views\\AdminJewel\\Components\\OrderManager.cshtml",
+              "RelativeToolTip": "duAn1\\Views\\AdminJewel\\Components\\OrderManager.cshtml",
+              "ViewState": "AgIAAGsAAAAAAAAAAAAMwHcAAAAlAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-03-16T01:50:07.408Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
               "Title": "Index.cshtml",
               "DocumentMoniker": "D:\\Pictures\\huynhNhu\\duAn1\\duAn1\\Views\\Stylist\\Index.cshtml",
               "RelativeDocumentMoniker": "duAn1\\Views\\Stylist\\Index.cshtml",
@@ -118,12 +135,11 @@
               "RelativeToolTip": "duAn1\\Views\\Stylist\\Index.cshtml",
               "ViewState": "AgIAAPwAAAAAAAAAAAAAAA0BAAAJAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2026-03-15T14:53:21.118Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-03-15T14:53:21.118Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 7,
+              "DocumentIndex": 8,
               "Title": "AdminController.cs",
               "DocumentMoniker": "D:\\Pictures\\huynhNhu\\duAn1\\duAn1\\Controllers\\AdminController.cs",
               "RelativeDocumentMoniker": "duAn1\\Controllers\\AdminController.cs",
@@ -135,7 +151,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 6,
               "Title": "ProductController.cs",
               "DocumentMoniker": "D:\\Pictures\\huynhNhu\\duAn1\\duAn1\\Controllers\\ProductController.cs",
               "RelativeDocumentMoniker": "duAn1\\Controllers\\ProductController.cs",
@@ -147,7 +163,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 9,
+              "DocumentIndex": 10,
               "Title": "FavoriteService.cs",
               "DocumentMoniker": "D:\\Pictures\\huynhNhu\\duAn1\\duAn1\\Services\\FavoriteService.cs",
               "RelativeDocumentMoniker": "duAn1\\Services\\FavoriteService.cs",
@@ -159,20 +175,20 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 1,
               "Title": "StylistController.cs",
               "DocumentMoniker": "D:\\Pictures\\huynhNhu\\duAn1\\duAn1\\Controllers\\StylistController.cs",
               "RelativeDocumentMoniker": "duAn1\\Controllers\\StylistController.cs",
               "ToolTip": "D:\\Pictures\\huynhNhu\\duAn1\\duAn1\\Controllers\\StylistController.cs",
               "RelativeToolTip": "duAn1\\Controllers\\StylistController.cs",
-              "ViewState": "AgIAAH4AAAAAAAAAAAAgwJAAAAARAAAAAAAAAA==",
+              "ViewState": "AgIAAI8AAAAAAAAAAAAwwJ8AAAAJAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-03-15T13:15:54.909Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 11,
+              "DocumentIndex": 12,
               "Title": "db.sql",
               "DocumentMoniker": "D:\\Pictures\\huynhNhu\\duAn1\\duAn1\\wwwroot\\lib\\db.sql",
               "RelativeDocumentMoniker": "duAn1\\wwwroot\\lib\\db.sql",
@@ -183,7 +199,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 14,
+              "DocumentIndex": 15,
               "Title": "UserManager.cshtml",
               "DocumentMoniker": "D:\\Pictures\\huynhNhu\\duAn1\\duAn1\\Views\\AdminJewel\\Components\\UserManager.cshtml",
               "RelativeDocumentMoniker": "duAn1\\Views\\AdminJewel\\Components\\UserManager.cshtml",
@@ -195,7 +211,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 13,
+              "DocumentIndex": 14,
               "Title": "Program.cs",
               "DocumentMoniker": "D:\\Pictures\\huynhNhu\\duAn1\\duAn1\\Program.cs",
               "RelativeDocumentMoniker": "duAn1\\Program.cs",
@@ -207,7 +223,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 18,
+              "DocumentIndex": 19,
               "Title": "Order.js",
               "DocumentMoniker": "D:\\Pictures\\huynhNhu\\duAn1\\duAn1\\wwwroot\\js\\Order.js",
               "RelativeDocumentMoniker": "duAn1\\wwwroot\\js\\Order.js",
@@ -219,7 +235,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 12,
+              "DocumentIndex": 13,
               "Title": "AppDbContext.cs",
               "DocumentMoniker": "D:\\Pictures\\huynhNhu\\duAn1\\duAn1\\Models\\AppDbContext.cs",
               "RelativeDocumentMoniker": "duAn1\\Models\\AppDbContext.cs",
@@ -231,7 +247,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 17,
+              "DocumentIndex": 18,
               "Title": "OrderController.cs",
               "DocumentMoniker": "D:\\Pictures\\huynhNhu\\duAn1\\duAn1\\Controllers\\OrderController.cs",
               "RelativeDocumentMoniker": "duAn1\\Controllers\\OrderController.cs",
@@ -243,7 +259,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 8,
+              "DocumentIndex": 9,
               "Title": "Product.cs",
               "DocumentMoniker": "D:\\Pictures\\huynhNhu\\duAn1\\duAn1\\Models\\Product.cs",
               "RelativeDocumentMoniker": "duAn1\\Models\\Product.cs",
@@ -255,7 +271,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 19,
+              "DocumentIndex": 20,
               "Title": "Order.cs",
               "DocumentMoniker": "D:\\Pictures\\huynhNhu\\duAn1\\duAn1\\Models\\Order.cs",
               "RelativeDocumentMoniker": "duAn1\\Models\\Order.cs",
@@ -267,7 +283,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 16,
+              "DocumentIndex": 17,
               "Title": "LoginController.cs",
               "DocumentMoniker": "D:\\Pictures\\huynhNhu\\duAn1\\duAn1\\Controllers\\LoginController.cs",
               "RelativeDocumentMoniker": "duAn1\\Controllers\\LoginController.cs",
@@ -279,7 +295,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 20,
+              "DocumentIndex": 21,
               "Title": "Message.cs",
               "DocumentMoniker": "D:\\Pictures\\huynhNhu\\duAn1\\duAn1\\Utils\\Message.cs",
               "RelativeDocumentMoniker": "duAn1\\Utils\\Message.cs",
@@ -291,7 +307,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 3,
               "Title": "AuthMiddleware.cs",
               "DocumentMoniker": "D:\\Pictures\\huynhNhu\\duAn1\\duAn1\\Utils\\AuthMiddleware.cs",
               "RelativeDocumentMoniker": "duAn1\\Utils\\AuthMiddleware.cs",
@@ -299,12 +315,11 @@
               "RelativeToolTip": "duAn1\\Utils\\AuthMiddleware.cs",
               "ViewState": "AgIAAAcAAAAAAAAAAAAuwBwAAABFAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-14T13:42:06.403Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-03-14T13:42:06.403Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 5,
               "Title": "CartController.cs",
               "DocumentMoniker": "D:\\Pictures\\huynhNhu\\duAn1\\duAn1\\Controllers\\CartController.cs",
               "RelativeDocumentMoniker": "duAn1\\Controllers\\CartController.cs",
@@ -316,7 +331,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
+              "DocumentIndex": 7,
               "Title": "HomeController.cs",
               "DocumentMoniker": "D:\\Pictures\\huynhNhu\\duAn1\\duAn1\\Controllers\\HomeController.cs",
               "RelativeDocumentMoniker": "duAn1\\Controllers\\HomeController.cs",
@@ -334,7 +349,7 @@
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 4,
               "Title": "appsettings.json",
               "DocumentMoniker": "D:\\Pictures\\huynhNhu\\duAn1\\duAn1\\appsettings.json",
               "RelativeDocumentMoniker": "duAn1\\appsettings.json",
@@ -347,7 +362,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 15,
+              "DocumentIndex": 16,
               "Title": "CryUtils.cs",
               "DocumentMoniker": "D:\\Pictures\\huynhNhu\\duAn1\\duAn1\\Utils\\CryUtils.cs",
               "RelativeDocumentMoniker": "duAn1\\Utils\\CryUtils.cs",
@@ -359,7 +374,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 10,
+              "DocumentIndex": 11,
               "Title": "AuthService.cs",
               "DocumentMoniker": "D:\\Pictures\\huynhNhu\\duAn1\\duAn1\\Services\\AuthService.cs",
               "RelativeDocumentMoniker": "duAn1\\Services\\AuthService.cs",
