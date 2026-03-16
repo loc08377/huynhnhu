@@ -37,6 +37,9 @@ namespace duAn1.Utils
                 case "needlogin":
                     tempData["warning"] = "Bạn cần đăng nhập để truy cập.";
                     break;
+                case "locked":
+                    tempData["warning"] = "Tài khoản hiện không hoạt động.";
+                    break;
                 // Thêm các case khác nếu cần
                 default:
                     break;

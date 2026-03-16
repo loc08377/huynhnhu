@@ -56,6 +56,13 @@ namespace duAn1.Controllers
                 return View("~/Views/Login/Index.cshtml");
             }
 
+            // Check tài khoản có bị khóa không
+            if (user.Actived == false)
+            {
+                ModelState.AddModelError("", "Tài khoản của bạn đã bị khóa!");
+                return View("~/Views/Login/Index.cshtml");
+            }
+
             // tạo claims
             var claims = new List<Claim>
             {

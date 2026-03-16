@@ -22,5 +22,18 @@ namespace duAn1.Services
                 return null;
             }
         }
+
+        public User GetUserById(int id)
+        {
+            try
+            {
+                return _userRepository.GetUserById(id);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine($"Error: {e.Message}");
+                return null;
+            }
+        }
     }
 }

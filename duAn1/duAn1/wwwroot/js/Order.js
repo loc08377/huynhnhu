@@ -21,8 +21,8 @@
                 });
 
                 document.getElementById('modal-qty').textContent = totalQty;
-                document.getElementById('modal-total').textContent = totalPrice.toLocaleString('vi-VN') + '₫';
-                document.getElementById('modal-grand-total').textContent = totalPrice.toLocaleString('vi-VN') + '₫';
+                document.getElementById('modal-total').textContent = formatVND(totalPrice);
+                document.getElementById('modal-grand-total').textContent = formatVND(totalPrice);
 
                 // Show modal
                 document.getElementById('checkoutModal').classList.remove('hidden');

@@ -42,7 +42,7 @@
                                 <div class="flex-grow flex flex-col justify-center">
                                     <div class="flex items-center justify-between gap-2">
                                         <h3 class="font-bold text-slate-800 text-base mb-0 line-clamp-1">@cart.Product.Name</h3>
-                                        <div class="text-blue-600 font-bold text-base whitespace-nowrap">@String.Format("{0:N0}", cart.Product.Price)₫</div>
+                                        <div class="text-blue-600 font-bold text-base whitespace-nowrap">@duAn1.Utils.PriceFormatter.FormatVND(cart.Product.Price)</div>
                                     </div>
                                 </div>
                                 <div class="flex flex-col items-center sm:items-end gap-2 min-w-[110px]">
@@ -81,7 +81,7 @@
                                 <div class="flex-grow flex flex-col justify-center">
                                     <div class="flex items-center justify-between gap-2">
                                         <h3 class="font-bold text-slate-800 font-serif text-base mb-0 line-clamp-1">@cart.Product.Name</h3>
-                                        <div class="text-blue-600 font-bold text-base whitespace-nowrap">@String.Format("{0:N0}", cart.Product.Price)₫</div>
+                                        <div class="text-blue-600 font-bold text-base whitespace-nowrap">@duAn1.Utils.PriceFormatter.FormatVND(cart.Product.Price)</div>
                                     </div>
                                 </div>
                                 <div class="flex flex-col items-center sm:items-end gap-2 min-w-[110px]">
@@ -119,7 +119,7 @@
                     </div>
                     <div class="flex justify-between text-slate-600">
                         <span>Tạm tính</span>
-                        <span id="cart-subtotal">0₫</span>
+                        <span id="cart-subtotal">0 VNĐ</span>
                     </div>
                     <div class="flex justify-between text-slate-600">
                         <span>Vận chuyển</span>
@@ -127,7 +127,7 @@
                     </div>
                     <div class="border-t border-slate-300 pt-3 mt-1 flex justify-between items-center">
                         <span class="font-bold text-slate-800 text-base">Tổng cộng</span>
-                        <span class="text-xl font-bold text-blue-600" id="cart-total">0₫</span>
+                        <span class="text-xl font-bold text-blue-600" id="cart-total">0 VNĐ</span>
                     </div>
                 </div>
                 <button onclick="showCheckoutModal()" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-xl shadow-lg hover:shadow-blue-500/40 transition-all active:scale-[0.98] flex justify-center items-center gap-2 text-base">
@@ -167,11 +167,11 @@
                             </div>
                             <div class="flex justify-between text-sm">
                                 <span class="text-slate-600">Tạm tính:</span>
-                                <span class="font-semibold text-slate-800" id="modal-total">0₫</span>
+                                <span class="font-semibold text-slate-800" id="modal-total">0 VNĐ</span>
                             </div>
                             <div class="flex justify-between text-sm pt-2 border-t border-slate-200">
                                 <span class="font-bold text-slate-800">Tổng:</span>
-                                <span class="font-bold text-blue-600 text-lg" id="modal-grand-total">0₫</span>
+                                <span class="font-bold text-blue-600 text-lg" id="modal-grand-total">0 VNĐ</span>
                             </div>
                         </div>
                     </div>
@@ -205,6 +205,7 @@
             </div>
         </div>
 
+        <script src="~/js/price-formatter.js"></script>
         <script src="~/js/Order.js"></script>
         </script>
 

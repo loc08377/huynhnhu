@@ -19,5 +19,10 @@ namespace duAn1.Repository
 
             return user;
         }
+
+        public User GetUserById(int id)
+        {
+            return _context.Users.FirstOrDefault(u => u.Id == id);
+        }
     }
 }

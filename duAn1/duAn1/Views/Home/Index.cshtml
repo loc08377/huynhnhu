@@ -12,7 +12,7 @@
     <div class="relative z-10 text-center text-white px-4 glass-panel p-10 rounded-2xl max-w-2xl mx-4">
         <h1 class="text-4xl md:text-6xl font-bold mb-4 font-serif text-blue-900 drop-shadow-sm">Vẻ Đẹp Vĩnh Cửu</h1>
         <p class="text-lg md:text-xl mb-8 text-slate-700 font-light">Khám phá bộ sưu tập trang sức tinh tế, đánh thức vẻ đẹp kiêu sa của bạn.</p>
-        <a href="/products" class="inline-block bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-8 rounded-full transition-all duration-300 transform hover:scale-105 shadow-lg border border-blue-400">
+        <a asp-controller="Home" asp-action="Collection" class="inline-block bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-8 rounded-full transition-all duration-300 transform hover:scale-105 shadow-lg border border-blue-400">
             Mua Sắm Ngay
         </a>
     </div>
@@ -58,7 +58,7 @@
 
                     <div class="mt-auto flex items-center justify-between pt-2">
                         <span class="text-base font-bold text-blue-600">
-                            @(item.Price?.ToString("N0") ?? "0") ₫
+                            @duAn1.Utils.PriceFormatter.FormatVND(item.Price)
                         </span>
                         <button onclick="addCart(@item.Id)" class="bg-slate-800 hover:bg-blue-600 text-white w-8 h-8 rounded-lg transition-all shadow-md flex items-center justify-center active:scale-95 z-20" title="Thêm vào giỏ">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
@@ -117,7 +117,7 @@
 
                     <div class="mt-auto flex items-center justify-between pt-2">
                         <span class="text-base font-bold text-blue-600">
-                            @(item.Price?.ToString("N0") ?? "0") ₫
+                            @duAn1.Utils.PriceFormatter.FormatVND(item.Price)
                         </span>
                         <button onclick="addCart(@item.Id)" class="bg-slate-800 hover:bg-blue-600 text-white w-8 h-8 rounded-lg transition-all shadow-md flex items-center justify-center active:scale-95 z-20" title="Thêm vào giỏ">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">

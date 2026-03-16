@@ -57,9 +57,9 @@ function updateOrderSummary() {
                 <div class="flex justify-between items-start text-sm bg-slate-50 p-2 rounded-lg">
                     <div class="flex-grow">
                         <p class="font-semibold text-slate-700 line-clamp-1">${item.name}</p>
-                        <p class="text-xs text-slate-500">x${item.quantity} × ${item.price.toLocaleString('vi-VN')}₫</p>
+                        <p class="text-xs text-slate-500">x${item.quantity} × ${formatVND(item.price)}</p>
                     </div>
-                    <p class="font-semibold text-blue-600 whitespace-nowrap ml-2">${item.total.toLocaleString('vi-VN')}₫</p>
+                    <p class="font-semibold text-blue-600 whitespace-nowrap ml-2">${formatVND(item.total)}</p>
                 </div>
             `).join('');
         }
@@ -75,11 +75,11 @@ function updateOrderSummary() {
     }
 
     if (subtotalElement) {
-        subtotalElement.textContent = totalPrice.toLocaleString('vi-VN') + '₫';
+        subtotalElement.textContent = formatVND(totalPrice);
     }
 
     if (totalElement) {
-        totalElement.textContent = totalPrice.toLocaleString('vi-VN') + '₫';
+        totalElement.textContent = formatVND(totalPrice);
     }
 }
 

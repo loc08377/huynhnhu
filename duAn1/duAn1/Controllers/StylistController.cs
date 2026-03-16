@@ -92,8 +92,8 @@ namespace duAn1.Controllers
                 {
                     filteredProducts = _geminiService.FilterByPrice(
                         filteredProducts,
-                        priceRange.Value.minPrice,
-                        priceRange.Value.maxPrice
+                        priceRange.Value.min,
+                        priceRange.Value.max
                     );
                 }
 
@@ -103,21 +103,18 @@ namespace duAn1.Controllers
                 // Step 4: Get conversation history
                 var conversationHistory = await _geminiService.GetConversationHistory(sessionId);
 
-                // Step 5: Call Gemini AI with fallback (built-in)
-                var (aiMessage, recommendedProductIds) = await _geminiService.GetAIRecommendationsWithFallback(
-                    filteredProducts,
+                // Step 5: Call Gemini AI to get recommendations
+                var (aiMessage, recommendedProductIds) = await _geminiService.AskAI(
                     request.UserMessage,
-                    conversationHistory
+                    sessionId
                 );
 
                 // Step 6: Save messages to conversation history
-                // Note: ChatMessage table is not in the current database schema
-                // Uncomment below when ChatMessage table is created via migration
-                // await _geminiService.SaveChatMessage(sessionId, "user", request.UserMessage ?? "");
-                // if (!string.IsNullOrEmpty(aiMessage))
-                // {
-                //     await _geminiService.SaveChatMessage(sessionId, "assistant", aiMessage, recommendedProductIds);
-                // }
+                await _geminiService.SaveChatMessage(sessionId, "user", request.UserMessage ?? "");
+                if (!string.IsNullOrEmpty(aiMessage))
+                {
+                    await _geminiService.SaveChatMessage(sessionId, "assistant", aiMessage);
+                }
 
                 // Step 7: Get product details for recommended products
                 var products = new List<dynamic>();

@@ -1,6 +1,4 @@
-@{
-    ViewData["Title"] = "AI Stylist - Tư Vấn Sản Phẩm";
-}
+<!-- AI Stylist Floating Widget -->
 
 <!-- Floating Chat Button -->
 <button id="floatingBtn" class="fixed bottom-6 right-6 z-40 w-14 h-14 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white rounded-full shadow-2xl flex items-center justify-center transition-all duration-300 hover:scale-110" title="AI Stylist">
@@ -11,7 +9,7 @@
 
 <!-- Chat Modal -->
 <div id="chatModal" class="fixed inset-0 bg-black/50 z-40 hidden transition-opacity duration-300 flex items-center justify-center p-4">
-    <!-- Modal Content - Positioned at bottom right on mobile, centered on desktop -->
+    <!-- Modal Content -->
     <div id="modalContent" class="w-full max-w-md h-[600px] bg-slate-800 rounded-lg shadow-2xl border border-purple-500/20 flex flex-col overflow-hidden transition-all duration-300 fixed bottom-6 right-6 max-h-[calc(100vh-50px)]">
         
         <!-- Modal Header -->
@@ -70,32 +68,6 @@
     </div>
 </div>
 
-<!-- Products Section -->
-<div class="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 py-8">
-    <div class="container mx-auto px-4">
-        <!-- Header -->
-        <div class="text-center mb-8">
-            <h1 class="text-3xl font-bold text-white mb-2">Sản Phẩm Gợi Ý</h1>
-            <p class="text-gray-400">Hỏi AI Stylist để nhận gợi ý sản phẩm phù hợp với bạn</p>
-        </div>
-
-        <!-- Products Grid -->
-        <div id="productsList" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-            <!-- Products will be inserted here -->
-        </div>
-
-        <!-- Empty State -->
-        <div id="emptyState" class="flex items-center justify-center min-h-[300px] text-gray-400">
-            <div class="text-center">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-16 h-16 mx-auto mb-4 opacity-50">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z" />
-                </svg>
-                <p class="text-lg">Hãy mở AI Stylist và gửi tin nhắn để xem sản phẩm gợi ý</p>
-            </div>
-        </div>
-    </div>
-</div>
-
 <style>
     @@keyframes fadeIn {
         from {
@@ -148,23 +120,6 @@
     #chatMessages::-webkit-scrollbar-thumb:hover {
         background: rgba(168, 85, 247, 0.8);
     }
-
-    #productsList::-webkit-scrollbar {
-        width: 4px;
-    }
-    
-    #productsList::-webkit-scrollbar-track {
-        background: rgba(30, 41, 59, 0.5);
-    }
-    
-    #productsList::-webkit-scrollbar-thumb {
-        background: rgba(168, 85, 247, 0.5);
-        border-radius: 2px;
-    }
-    
-    #productsList::-webkit-scrollbar-thumb:hover {
-        background: rgba(168, 85, 247, 0.8);
-    }
 </style>
 
 <script src="~/js/price-formatter.js"></script>
@@ -173,13 +128,11 @@
     let sessionId = null;
     let conversation = [];
     let isLoading = false;
-    let hasProducts = false;
 
     // Initialize session on page load
     window.addEventListener('load', () => {
         sessionId = localStorage.getItem('stylistSessionId') || generateSessionId();
         localStorage.setItem('stylistSessionId', sessionId);
-        document.getElementById('messageInput').focus();
     });
 
     function generateSessionId() {
@@ -195,7 +148,8 @@
         if (!message || isLoading) return;
 
         isLoading = true;
-        document.getElementById('sendBtn').disabled = true;
+        const sendBtn = document.getElementById('sendBtn');
+        sendBtn.disabled = true;
 
         const chatMessages = document.getElementById('chatMessages');
 
@@ -277,127 +231,45 @@
                 // Add to conversation history
                 conversation.push({ role: 'assistant', content: data.message });
 
-                // Display products if recommended
-                if (data.products && data.products.length > 0) {
-                    displayProducts(data.products);
-                }
-
                 chatMessages.scrollTop = chatMessages.scrollHeight;
             } else {
-                toastr.error(data.message || 'Lỗi không xác định');
+                console.error('API Error:', data.message);
+                const errorMsg = document.createElement('div');
+                errorMsg.className = 'flex gap-2 animate-fade-in';
+                errorMsg.innerHTML = `
+                    <div class="w-7 h-7 bg-red-500 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="white" viewBox="0 0 24 24" class="w-4 h-4">
+                            <path d="M6 18L18 6M6 6l12 12"></path>
+                        </svg>
+                    </div>
+                    <div class="bg-red-900/50 border border-red-500/30 text-red-100 rounded-lg px-3 py-1.5 max-w-xs">
+                        <p class="text-xs">${escapeHtml(data.message || 'Lỗi không xác định')}</p>
+                    </div>
+                `;
+                chatMessages.appendChild(errorMsg);
+                chatMessages.scrollTop = chatMessages.scrollHeight;
             }
         } catch (error) {
             loadingDiv.remove();
-            toastr.error("Lỗi: " + error.message);
-            console.error(error);
+            console.error('Fetch Error:', error);
+            const errorMsg = document.createElement('div');
+            errorMsg.className = 'flex gap-2 animate-fade-in';
+            errorMsg.innerHTML = `
+                <div class="w-7 h-7 bg-red-500 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="white" viewBox="0 0 24 24" class="w-4 h-4">
+                        <path d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </div>
+                <div class="bg-red-900/50 border border-red-500/30 text-red-100 rounded-lg px-3 py-1.5 max-w-xs">
+                    <p class="text-xs">Lỗi: ${escapeHtml(error.message)}</p>
+                </div>
+            `;
+            chatMessages.appendChild(errorMsg);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
         } finally {
             isLoading = false;
-            document.getElementById('sendBtn').disabled = false;
+            sendBtn.disabled = false;
             input.focus();
-        }
-    }
-
-    function displayProducts(products) {
-        const list = document.getElementById('productsList');
-        const emptyState = document.getElementById('emptyState');
-        const title = document.getElementById('productsTitle');
-        const img404 = "https://png.pngtree.com/thumb_back/fw800/background/20220119/pngtree-404-error-and-page-not-found-image_983763.jpg";
-        list.innerHTML = '';
-        hasProducts = true;
-        emptyState.style.display = 'none';
-        title.textContent = `Gợi Ý (${products.length})`;
-
-        products.forEach(product => {
-            const card = document.createElement('div');
-            card.className = 'bg-slate-700 border border-purple-500/30 rounded-lg overflow-hidden hover:border-purple-500 transition-all cursor-pointer hover:shadow-lg hover:shadow-purple-500/20 group';
-            card.innerHTML = `
-                <div class="relative aspect-square overflow-hidden bg-slate-600">
-                    <img src="${escapeHtml(product.image)}" alt="${escapeHtml(product.name)}" class="w-full h-full object-cover group-hover:scale-110 transition-transform" onerror="this.src='${img404}'" />
-                    <div class="absolute top-2 right-2 bg-gradient-to-r from-purple-600 to-pink-600 rounded px-2 py-1 text-xs font-bold text-white">
-                        ${formatVND(product.price)}
-                    </div>
-                </div>
-                
-                <div class="p-2">
-                    <h3 class="font-semibold text-gray-100 text-xs line-clamp-2">${escapeHtml(product.name)}</h3>
-                    <p class="text-xs text-gray-400 mt-0.5">${escapeHtml(product.category_name)}</p>
-                    
-                    <div class="flex items-center gap-1 mt-1 text-xs text-gray-400">
-                        <span>📊${product.total_sales}</span>
-                        <span>❤️${product.total_favorites}</span>
-                    </div>
-                    
-                    <div class="flex gap-1 mt-2">
-                        <a href="/CollectionProduct/ProductDetail/${product.id}" class="flex-1 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white text-center py-1 rounded text-xs font-semibold transition-all">
-                            Chi Tiết
-                        </a>
-                        <button onclick="addToCart(${product.id}, 1)" class="flex-1 bg-slate-600 hover:bg-slate-500 text-gray-300 py-1 rounded text-xs font-semibold transition-colors">
-                            +Giỏ
-                        </button>
-                    </div>
-                </div>
-            `;
-            list.appendChild(card);
-        });
-    }
-
-    async function addToCart(productId, quantity) {
-        try {
-            const response = await fetch(`/Cart/AddToCart?productId=${productId}&quantity=${quantity}`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            });
-
-            const data = await response.json();
-            if (data.success) {
-                toastr.success('Đã thêm vào giỏ hàng');
-                if (window.updateCartCount) {
-                    window.updateCartCount();
-                }
-            } else {
-                toastr.error(data.message);
-            }
-        } catch (error) {
-            toastr.error("Lỗi: " + error.message);
-        }
-    }
-
-    async function clearChat() {
-        if (!confirm('Bạn có chắc muốn xóa lịch sử chat?')) return;
-
-        try {
-            await fetch('/api/stylist/clear', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ sessionId })
-            });
-
-            // Clear UI
-            const chatMessages = document.getElementById('chatMessages');
-            chatMessages.innerHTML = `
-                <div class="flex gap-2 animate-fade-in">
-                    <div class="w-7 h-7 bg-gradient-to-br from-purple-500 to-pink-500 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white" class="w-4 h-4">
-                            <path fill-rule="evenodd" d="M9 4.5a.75.75 0 01.721.544l.813 2.846a3.75 3.75 0 002.576 2.576l2.846.813a.75.75 0 010 1.442l-2.846.813a3.75 3.75 0 00-2.576 2.576l-.813 2.846a.75.75 0 01-1.442 0l-.813-2.846a3.75 3.75 0 00-2.576-2.576l-2.846-.813a.75.75 0 010-1.442l2.846-.813a3.75 3.75 0 002.576-2.576l.813-2.846A.75.75 0 019 4.5z" clip-rule="evenodd" />
-                        </svg>
-                    </div>
-                    <div class="bg-slate-700 border border-purple-500/30 text-gray-100 rounded-lg px-3 py-2 max-w-xs">
-                        <p class="font-semibold text-purple-300 text-sm">Lịch sử đã xóa</p>
-                    </div>
-                </div>
-            `;
-            document.getElementById('productsList').innerHTML = '';
-            document.getElementById('emptyState').style.display = 'flex';
-            document.getElementById('productsTitle').textContent = 'Sản Phẩm Gợi Ý';
-            conversation = [];
-            hasProducts = false;
-            toastr.info('Lịch sử chat đã xóa');
-        } catch (error) {
-            toastr.error("Lỗi: " + error.message);
         }
     }
 
@@ -418,40 +290,30 @@
     const modalContent = document.getElementById('modalContent');
     const closeBtn = document.getElementById('closeBtn');
 
-    // Open/Close Modal
-    floatingBtn.addEventListener('click', () => {
-        chatModal.classList.toggle('hidden');
-        if (!chatModal.classList.contains('hidden')) {
-            document.getElementById('messageInput').focus();
-        }
-    });
+    if (floatingBtn && chatModal) {
+        // Open/Close Modal
+        floatingBtn.addEventListener('click', () => {
+            chatModal.classList.toggle('hidden');
+            if (!chatModal.classList.contains('hidden')) {
+                setTimeout(() => document.getElementById('messageInput').focus(), 100);
+            }
+        });
 
-    // Close button click
-    closeBtn.addEventListener('click', () => {
-        chatModal.classList.add('hidden');
-    });
-
-    // Close modal when clicking outside (on the overlay)
-    chatModal.addEventListener('click', (e) => {
-        if (e.target === chatModal) {
+        // Close button click
+        closeBtn.addEventListener('click', () => {
             chatModal.classList.add('hidden');
-        }
-    });
+        });
 
-    // Prevent closing when clicking inside modal content
-    modalContent.addEventListener('click', (e) => {
-        e.stopPropagation();
-    });
+        // Close modal when clicking outside
+        chatModal.addEventListener('click', (e) => {
+            if (e.target === chatModal) {
+                chatModal.classList.add('hidden');
+            }
+        });
 
-    // Prevent body scroll when modal is open
-    const originalStyle = document.body.style.overflow;
-    const observer = new MutationObserver(() => {
-        if (!chatModal.classList.contains('hidden')) {
-            document.body.style.overflow = 'hidden';
-        } else {
-            document.body.style.overflow = originalStyle;
-        }
-    });
-    observer.observe(chatModal, { attributes: true, attributeFilter: ['class'] });
+        // Prevent closing when clicking inside modal content
+        modalContent.addEventListener('click', (e) => {
+            e.stopPropagation();
+        });
+    }
 </script>
-

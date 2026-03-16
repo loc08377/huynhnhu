@@ -8,6 +8,7 @@ wwwroot\js\Collection.js
 wwwroot\js\fetch-config.js
 wwwroot\js\home.js
 wwwroot\js\Order.js
+wwwroot\js\price-formatter.js
 wwwroot\js\register-validate.js
 wwwroot\js\site.js
 wwwroot\lib\bootstrap\dist\css\bootstrap-grid.css

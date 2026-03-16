@@ -1,4 +1,5 @@
-﻿public class AuthMiddleware
+﻿using duAn1.Services;
+public class AuthMiddleware
 {
     private readonly RequestDelegate _next;
     private readonly IConfiguration _configuration;
@@ -57,6 +58,29 @@
 
                 context.Response.Redirect(redirectUrl);
                 return;
+            }
+
+            // Lấy userId từ claim và check tài khoản có bị khóa không
+            var userIdClaim = context.User.FindFirst("UserId")?.Value;
+            if (!string.IsNullOrEmpty(userIdClaim) && int.TryParse(userIdClaim, out int userId))
+            {
+                var userService = context.RequestServices.GetRequiredService<UserService>();
+                var user = userService.GetUserById(userId);
+                if (user == null || user.Actived == false)
+                {
+                    string redirectUrl = "/Login/Index?error=locked";
+                    
+                    if (IsAjaxRequest(context))
+                    {
+                        context.Response.StatusCode = 403;
+                        context.Response.ContentType = "application/json";
+                        await context.Response.WriteAsJsonAsync(new { redirect = redirectUrl });
+                        return;
+                    }
+
+                    context.Response.Redirect(redirectUrl);
+                    return;
+                }
             }
 
             // Lấy role

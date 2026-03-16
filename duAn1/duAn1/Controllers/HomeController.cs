@@ -130,7 +130,7 @@ namespace duAn1.Controllers
         }
         
         [HttpPost]
-        [ValidateAntiForgeryToken]
+        [HttpGet]
         public async Task<IActionResult> Logout()
         {
             await HttpContext.SignOutAsync();
